@@ -1,4 +1,9 @@
-# Aniki Visual Pack Creator
+<div align="center">
+
+# Aniki Visual Pack Creator 
+![Made for Playnite Fullscreen Themes](https://img.shields.io/badge/Made%20for-Playnite%20Fullscreen%20Themes-A600FF?style=for-the-badge)
+
+</div>
 
 Aniki Visual Pack Creator is a small Windows tool for making custom Visual Packs for Aniki ReMake.
 It prepares the images at the sizes expected by the theme and exports a ZIP that can be imported directly from Aniki Helper.
@@ -30,35 +35,6 @@ It prepares the images at the sizes expected by the theme and exports a ZIP that
 **Show UI preview** adds an interface reference over the editor preview when one is available. It is only there to help with image placement and is never exported into the pack.
 
 Project files keep source-image paths relative to the `.avpc` file when possible. If you move a project, keeping its source images with it will make reopening it easier.
-
-## Images used by a Visual Pack
-
-| File | Dimensions |
-| --- | ---: |
-| `MainBackground.jpg` | 1920 × 1080 |
-| `Welcome.jpg` | 1920 × 1080 |
-| `StatView.jpg` | 1920 × 1080 |
-| `FriendsView.jpg` | 1920 × 1080 |
-| `AchievementsView.jpg` | 1920 × 1080 |
-| `MediaView.jpg` | 1920 × 1080 |
-| `StoreView.jpg` | 1920 × 1080 |
-| `MainMenu.jpg` | 531 × 986 |
-| `SettingsBackground.jpg` | 487 × 1080 |
-| `FrameSettingsBackground.jpg` | 1247 × 900 |
-| `MessageBox.jpg` | 830 × 429 |
-| `GameMenu.jpg` | 470 × 655 |
-| `ItemMenu.jpg` | 503 × 818 |
-| `Login.jpg` | 857 × 238 |
-
-## Build
-
-The project uses .NET 8 and WPF.
-
-Run:
-
-```text
-publish-win-x64.cmd
-```
 
 The portable executable will be created here:
 
