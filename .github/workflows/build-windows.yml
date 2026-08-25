@@ -1,0 +1,36 @@
+name: Build Windows portable app
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+jobs:
+  publish:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Publish portable application
+        run: >-
+          dotnet publish AnikiVisualPackCreator.csproj
+          --configuration Release
+          --runtime win-x64
+          --self-contained true
+          --output publish/win-x64
+          -p:PublishSingleFile=true
+          -p:IncludeNativeLibrariesForSelfExtract=true
+          -p:EnableCompressionInSingleFile=true
+
+      - name: Upload application
+        uses: actions/upload-artifact@v4
+        with:
+          name: AnikiVisualPackCreator-win-x64
+          path: publish/win-x64/AnikiVisualPackCreator.exe
