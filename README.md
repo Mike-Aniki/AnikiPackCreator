@@ -1,6 +1,9 @@
 <div align="center">
 
+<img src="Assets/AppIcon.png" width="120">
+
 # Aniki Visual Pack Creator
+
 ![Made for Playnite Fullscreen Themes](https://img.shields.io/badge/Made%20for-Playnite%20Fullscreen%20Themes-A600FF?style=for-the-badge)
 
 </div>
