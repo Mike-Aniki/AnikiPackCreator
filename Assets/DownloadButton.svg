@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="290" height="58" viewBox="0 0 290 58">
+  <rect width="290" height="58" rx="10" fill="#00AEEF"></rect>
+  
+  <svg x="22" y="17" width="24" height="24" viewBox="0 0 24 24" fill="none">
+    <path d="M12 3V15M12 15L7.5 10.5M12 15L16.5 10.5M5 20H19" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path>
+  </svg>
+
+  <text x="60" y="36" font-family="Segoe UI, Arial, sans-serif" font-size="17" font-weight="600" fill="white">
+    Download Latest Version
+  </text>
+</svg>
