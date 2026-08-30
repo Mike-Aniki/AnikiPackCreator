@@ -12,16 +12,25 @@
 
 Choose your images, position them directly in the preview, adjust the look if needed, and export everything as a ZIP ready to import into **Aniki Helper**.
 
-<img width="1919" height="1019" alt="image" src="https://github.com/user-attachments/assets/a9ff4cc1-45a3-4c7f-b31e-e136436eeead" />
-
-
-## Download
-
-Download the latest version from the **Releases** section of this repository.
-
 No installation is required. Just download `AnikiVisualPackCreator.exe` and launch it.
 
-> Windows SmartScreen may display a warning because the application is not digitally signed.
+<br>
+
+<div align="center">
+
+<a href="https://github.com/Mike-Aniki/AnikiVisualPackCreator/releases/latest/download/AnikiVisualPackCreator.exe">
+  <img src="Assets/DownloadButton.svg" height="58" alt="Download Aniki Visual Pack Creator">
+</a>
+&nbsp;
+<a href="https://github.com/Mike-Aniki/AnikiVisualPackCreator/releases/latest">
+  <img src="Assets/ReleaseButton.svg" height="58" alt="View latest release">
+</a>
+
+</div>
+
+<br><br>
+
+<img width="1919" height="1019" alt="image" src="https://github.com/user-attachments/assets/a9ff4cc1-45a3-4c7f-b31e-e136436eeead" />
 
 ## Features
 
