@@ -12,6 +12,9 @@
 
 Choose your images, position them directly in the preview, adjust the look if needed, and export everything as a ZIP ready to import into **Aniki Helper**.
 
+<img width="1919" height="1019" alt="image" src="https://github.com/user-attachments/assets/a9ff4cc1-45a3-4c7f-b31e-e136436eeead" />
+
+
 ## Download
 
 Download the latest version from the **Releases** section of this repository.
