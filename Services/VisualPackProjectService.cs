@@ -14,8 +14,11 @@ public static class VisualPackProjectService
 
     public static void Save(
         string projectPath,
+        string packId,
         string packName,
         string author,
+        string version,
+        string description,
         IEnumerable<VisualPackAssetState> assets)
     {
         var projectDirectory = Path.GetDirectoryName(projectPath) ?? Environment.CurrentDirectory;
@@ -23,8 +26,11 @@ public static class VisualPackProjectService
 
         var document = new VisualPackProjectDocument
         {
+            PackId = packId?.Trim() ?? string.Empty,
             PackName = packName?.Trim() ?? string.Empty,
             Author = author?.Trim() ?? string.Empty,
+            Version = string.IsNullOrWhiteSpace(version) ? "1.0.0" : version.Trim(),
+            Description = description?.Trim() ?? string.Empty,
             Assets = assets.Select(asset => new VisualPackAssetProjectState
             {
                 FileName = asset.FileName,
@@ -48,6 +54,14 @@ public static class VisualPackProjectService
         {
             throw new InvalidDataException(Loc.Format("ServiceUnsupportedFormatVersion", document.FormatVersion));
         }
+
+        // Backward compatibility with projects created before Community Pack metadata existed.
+        document.PackId ??= string.Empty;
+        document.PackName ??= string.Empty;
+        document.Author ??= string.Empty;
+        document.Version = string.IsNullOrWhiteSpace(document.Version) ? "1.0.0" : document.Version.Trim();
+        document.Description ??= string.Empty;
+        document.Assets ??= [];
 
         var projectDirectory = Path.GetDirectoryName(projectPath) ?? Environment.CurrentDirectory;
         foreach (var asset in document.Assets)

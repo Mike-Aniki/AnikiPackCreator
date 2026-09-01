@@ -32,5 +32,5 @@ jobs:
       - name: Upload application
         uses: actions/upload-artifact@v4
         with:
-          name: AnikiVisualPackCreator-win-x64
-          path: publish/win-x64/AnikiVisualPackCreator.exe
+          name: AnikiPackCreator-win-x64
+          path: publish/win-x64/AnikiPackCreator.exe

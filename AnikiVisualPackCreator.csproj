@@ -5,7 +5,7 @@
     <UseWPF>true</UseWPF>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <AssemblyName>AnikiVisualPackCreator</AssemblyName>
+    <AssemblyName>AnikiPackCreator</AssemblyName>
     <RootNamespace>AnikiVisualPackCreator</RootNamespace>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <ApplicationIcon>Assets\AnikiVisualPackCreator.ico</ApplicationIcon>

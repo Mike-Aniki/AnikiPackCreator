@@ -2,6 +2,7 @@
 using AnikiVisualPackCreator.Services;
 using Loc = AnikiVisualPackCreator.Localization.LocalizationService;
 using Microsoft.Win32;
+using System.Diagnostics;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
@@ -31,6 +32,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     private string statusText = Loc.Get("StatusSelectOrDrop");
     private double exportProgress;
     private string? currentProjectPath;
+    private string currentPackId = string.Empty;
     private bool isDraggingPreview;
     private Point dragStartPoint;
     private double dragStartPanX;
@@ -170,6 +172,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
             showUiPreview = value;
             OnPropertyChanged();
+            QueuePreviewUpdate();
         }
     }
 
@@ -236,7 +239,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             MessageBox.Show(
                 this,
                 Loc.Get("FillMissingSelectSource"),
-                "Aniki Visual Pack Creator",
+                "Aniki Pack Creator",
                 MessageBoxButton.OK,
                 MessageBoxImage.Information);
             return;
@@ -349,8 +352,11 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         suppressDirtyState = true;
         try
         {
+            currentPackId = string.Empty;
             PackNameTextBox.Text = Loc.Get("DefaultPackName");
             AuthorTextBox.Text = string.Empty;
+            VersionTextBox.Text = Loc.Get("DefaultVersion");
+            DescriptionTextBox.Text = string.Empty;
             foreach (var asset in Assets)
             {
                 asset.SourcePath = null;
@@ -393,8 +399,14 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         {
             var document = VisualPackProjectService.Load(dialog.FileName);
             suppressDirtyState = true;
+            var upgradedLegacyProject = string.IsNullOrWhiteSpace(document.PackId);
+            currentPackId = upgradedLegacyProject
+                ? CreatePackId(document.PackName)
+                : document.PackId.Trim();
             PackNameTextBox.Text = document.PackName;
             AuthorTextBox.Text = document.Author;
+            VersionTextBox.Text = string.IsNullOrWhiteSpace(document.Version) ? Loc.Get("DefaultVersion") : document.Version;
+            DescriptionTextBox.Text = document.Description ?? string.Empty;
 
             foreach (var asset in Assets)
             {
@@ -409,8 +421,10 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
             currentProjectPath = dialog.FileName;
             ClearPreviewSourceCache();
-            isDirty = false;
-            StatusText = Loc.Format("StatusProjectOpened", Path.GetFileName(dialog.FileName));
+            isDirty = upgradedLegacyProject;
+            StatusText = upgradedLegacyProject
+                ? Loc.Format("StatusLegacyProjectUpgraded", Path.GetFileName(dialog.FileName))
+                : Loc.Format("StatusProjectOpened", Path.GetFileName(dialog.FileName));
             QueuePreviewUpdate();
         }
         catch (Exception exception)
@@ -452,7 +466,15 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
         try
         {
-            VisualPackProjectService.Save(path, PackNameTextBox.Text, AuthorTextBox.Text, Assets);
+            EnsurePackId();
+            VisualPackProjectService.Save(
+                path,
+                currentPackId,
+                PackNameTextBox.Text,
+                AuthorTextBox.Text,
+                VersionTextBox.Text,
+                DescriptionTextBox.Text,
+                Assets);
             currentProjectPath = path;
             isDirty = false;
             StatusText = Loc.Format("StatusProjectSaved", Path.GetFileName(path));
@@ -492,10 +514,14 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             ExportProgress = 0;
             StatusText = Loc.Get("StatusGeneratingPack");
 
+            EnsurePackId();
             VisualPackExportService.Export(
                 dialog.FileName,
+                currentPackId,
                 PackNameTextBox.Text,
                 AuthorTextBox.Text,
+                VersionTextBox.Text,
+                DescriptionTextBox.Text,
                 Assets,
                 (step, name) =>
                 {
@@ -526,6 +552,24 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     private void MetadataTextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
     {
         MarkDirty();
+    }
+
+    private void ShareCommunityPackClick(object sender, RoutedEventArgs e)
+    {
+        const string submissionUrl = "https://github.com/Mike-Aniki/AnikiCommunityVisualPacks/issues/new?template=visual-pack-submission.yml";
+
+        try
+        {
+            Process.Start(new ProcessStartInfo(submissionUrl)
+            {
+                UseShellExecute = true
+            });
+            StatusText = Loc.Get("StatusCommunitySubmissionOpened");
+        }
+        catch (Exception exception)
+        {
+            ShowError(Loc.Get("ErrorCommunitySubmissionOpen"), exception);
+        }
     }
 
     private void AssetPropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -597,7 +641,12 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             var previewHeight = Math.Max(
                 1,
                 (int)Math.Round(previewWidth * SelectedAsset.Definition.Height / (double)SelectedAsset.Definition.Width));
-            PreviewBitmap = ImageRenderService.Render(source, previewWidth, previewHeight, SelectedAsset);
+            PreviewBitmap = ImageRenderService.RenderThemePreview(
+                source,
+                previewWidth,
+                previewHeight,
+                SelectedAsset,
+                ShowUiPreview);
         }
         catch (Exception exception)
         {
@@ -666,6 +715,15 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             errors.Add(Loc.Get("ValidationEnterPackName"));
         }
 
+        if (string.IsNullOrWhiteSpace(VersionTextBox.Text))
+        {
+            errors.Add(Loc.Get("ValidationEnterVersion"));
+        }
+        else if (!IsValidPackVersion(VersionTextBox.Text))
+        {
+            errors.Add(Loc.Get("ValidationInvalidVersion"));
+        }
+
         var missing = Assets.Where(asset => !asset.IsReady).ToList();
         if (missing.Count > 0)
         {
@@ -697,6 +755,62 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             MessageBoxImage.Warning);
 
         return false;
+    }
+
+    private void EnsurePackId()
+    {
+        if (!string.IsNullOrWhiteSpace(currentPackId))
+        {
+            return;
+        }
+
+        currentPackId = CreatePackId(PackNameTextBox.Text);
+        MarkDirty();
+    }
+
+    private static string CreatePackId(string packName)
+    {
+        var normalized = (packName ?? string.Empty)
+            .Trim()
+            .ToLowerInvariant()
+            .Normalize(System.Text.NormalizationForm.FormD);
+        var builder = new System.Text.StringBuilder();
+
+        foreach (var character in normalized)
+        {
+            if (System.Globalization.CharUnicodeInfo.GetUnicodeCategory(character) ==
+                System.Globalization.UnicodeCategory.NonSpacingMark)
+            {
+                continue;
+            }
+
+            var isAsciiLetter = character is >= 'a' and <= 'z';
+            var isDigit = character is >= '0' and <= '9';
+            if (isAsciiLetter || isDigit)
+            {
+                builder.Append(character);
+            }
+            else if (builder.Length > 0 && builder[^1] != '-')
+            {
+                builder.Append('-');
+            }
+        }
+
+        var slug = builder.ToString().Trim('-');
+        if (string.IsNullOrWhiteSpace(slug))
+        {
+            slug = "custom-visual-pack";
+        }
+
+        var suffix = Guid.NewGuid().ToString("N")[..8];
+        return $"{slug}-{suffix}";
+    }
+
+    private static bool IsValidPackVersion(string version)
+    {
+        return System.Text.RegularExpressions.Regex.IsMatch(
+            version.Trim(),
+            @"^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?$");
     }
 
     private bool ConfirmDiscardChanges()
@@ -764,7 +878,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         MessageBox.Show(
             this,
             message + "\n\n" + exception.Message,
-            "Aniki Visual Pack Creator",
+            "Aniki Pack Creator",
             MessageBoxButton.OK,
             MessageBoxImage.Error);
     }

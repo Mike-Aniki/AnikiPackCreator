@@ -1,4 +1,4 @@
-using Loc = AnikiVisualPackCreator.Localization.LocalizationService;
+﻿using Loc = AnikiVisualPackCreator.Localization.LocalizationService;
 
 namespace AnikiVisualPackCreator.Models;
 
@@ -52,7 +52,13 @@ public sealed class VisualPackAssetDefinition
             1080,
             Loc.Get("AssetFriendsDescription"),
             "Assets/PreviewOverlays/FriendsView.png"),
-        new("AchievementsView.jpg", Loc.Get("AssetAchievementsName"), 1920, 1080, Loc.Get("AssetAchievementsDescription")),
+        new(
+            "AchievementsView.jpg",
+            Loc.Get("AssetAchievementsName"),
+            1920,
+            1080,
+            Loc.Get("AssetAchievementsDescription"),
+            "Assets/PreviewOverlays/AchievementsView.png"),
         new(
             "MediaView.jpg",
             Loc.Get("AssetCapturesName"),
@@ -67,12 +73,18 @@ public sealed class VisualPackAssetDefinition
             1080,
             Loc.Get("AssetStoreDescription"),
             "Assets/PreviewOverlays/StoreView.png"),
-        new("MainMenu.jpg", Loc.Get("AssetMainMenuName"), 531, 986, Loc.Get("AssetMainMenuDescription")),
-        new("SettingsBackground.jpg", Loc.Get("AssetSettingsMenuName"), 487, 1080, Loc.Get("AssetSettingsMenuDescription")),
-        new("FrameSettingsBackground.jpg", Loc.Get("AssetSettingsWindowName"), 1247, 900, Loc.Get("AssetSettingsWindowDescription")),
-        new("MessageBox.jpg", Loc.Get("AssetMessageBoxName"), 830, 429, Loc.Get("AssetMessageBoxDescription")),
-        new("GameMenu.jpg", Loc.Get("AssetGameMenuName"), 470, 655, Loc.Get("AssetGameMenuDescription")),
-        new("ItemMenu.jpg", Loc.Get("AssetItemMenuName"), 503, 818, Loc.Get("AssetItemMenuDescription")),
+        new("MainMenu.jpg", Loc.Get("AssetMainMenuName"), 531, 986, Loc.Get("AssetMainMenuDescription"),
+            "Assets/PreviewOverlays/MainMenu.png"),
+        new("SettingsBackground.jpg", Loc.Get("AssetSettingsMenuName"), 487, 1080, Loc.Get("AssetSettingsMenuDescription"),
+            "Assets/PreviewOverlays/SettingsBackground.png"),
+        new("FrameSettingsBackground.jpg", Loc.Get("AssetSettingsWindowName"), 1247, 900, Loc.Get("AssetSettingsWindowDescription"),
+            "Assets/PreviewOverlays/FrameSettingsBackground.png"),
+        new("MessageBox.jpg", Loc.Get("AssetMessageBoxName"), 830, 429, Loc.Get("AssetMessageBoxDescription"),
+            "Assets/PreviewOverlays/MessageBox.png"),
+        new("GameMenu.jpg", Loc.Get("AssetGameMenuName"), 470, 655, Loc.Get("AssetGameMenuDescription"),
+            "Assets/PreviewOverlays/GameMenu.png"),
+        new("ItemMenu.jpg", Loc.Get("AssetItemMenuName"), 503, 818, Loc.Get("AssetItemMenuDescription"),
+            "Assets/PreviewOverlays/ItemMenu.png"),
         new(
             "Login.jpg",
             Loc.Get("AssetLoginName"),

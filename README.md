@@ -2,27 +2,27 @@
 
 <img src="Assets/AppIcon.png" width="120">
 
-# Aniki Visual Pack Creator
+# Aniki Pack Creator
 
 ![Made for Playnite Fullscreen Themes](https://img.shields.io/badge/Made%20for-Playnite%20Fullscreen%20Themes-A600FF?style=for-the-badge)
 
 </div>
 
-**Aniki Visual Pack Creator** is a portable Windows app that makes it easy to create your own Visual Packs for **Aniki ReMake**.
+**Aniki Pack Creator** is a portable Windows app that makes it easy to create your own Visual Packs for **Aniki ReMake**.
 
 Choose your images, position them directly in the preview, adjust the look if needed, and export everything as a ZIP ready to import into **Aniki Helper**.
 
-No installation is required. Just download `AnikiVisualPackCreator.exe` and launch it.
+No installation is required. Just download `AnikiPackCreator.exe` and launch it.
 
 <br>
 
 <div align="center">
 
-<a href="https://github.com/Mike-Aniki/AnikiVisualPackCreator/releases/latest/download/AnikiVisualPackCreator.exe">
-  <img src="Assets/DownloadButton.svg" height="58" alt="Download Aniki Visual Pack Creator">
+<a href="https://github.com/Mike-Aniki/AnikiPackCreator/releases/latest/download/AnikiPackCreator.exe">
+  <img src="Assets/DownloadButton.svg" height="58" alt="Download Aniki Pack Creator">
 </a>
 &nbsp;
-<a href="https://github.com/Mike-Aniki/AnikiVisualPackCreator/releases/latest">
+<a href="https://github.com/Mike-Aniki/AnikiPackCreator/releases/latest">
   <img src="Assets/ReleaseButton.svg" height="58" alt="View latest release">
 </a>
 
@@ -59,7 +59,7 @@ Once your ZIP has been exported:
 1. Open Playnite desktop and go to **Aniki Helper** settings.
 2. Go to the **Visual Packs** section.
 3. Click **Import Visual Pack**.
-4. Select the ZIP created by Aniki Visual Pack Creator.
+4. Select the ZIP created by Aniki Pack Creator.
 5. Apply your new pack.
 
 That's it — your custom Visual Pack is now ready to use in Aniki ReMake.

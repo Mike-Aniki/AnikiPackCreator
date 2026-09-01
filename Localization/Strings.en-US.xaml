@@ -1,4 +1,4 @@
-<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
     <sys:String x:Key="HeaderTitle">CREATE YOUR VISUAL PACK</sys:String>
@@ -8,6 +8,9 @@
     <sys:String x:Key="SaveProject">Save project</sys:String>
     <sys:String x:Key="PackName">PACK NAME</sys:String>
     <sys:String x:Key="Author">AUTHOR</sys:String>
+    <sys:String x:Key="Version">VERSION</sys:String>
+    <sys:String x:Key="Description">DESCRIPTION</sys:String>
+    <sys:String x:Key="DefaultVersion">1.0.0</sys:String>
     <sys:String x:Key="DefaultPackName">My Visual Pack</sys:String>
     <sys:String x:Key="PackImages">PACK IMAGES</sys:String>
     <sys:String x:Key="FillEmptyViews">Fill empty views</sys:String>
@@ -19,11 +22,12 @@
     <sys:String x:Key="Zoom">ZOOM</sys:String>
     <sys:String x:Key="ResetPositionZoom">Reset position and zoom</sys:String>
     <sys:String x:Key="AutomaticAnikiStyle">AUTOMATIC ANIKI STYLE</sys:String>
-    <sys:String x:Key="AutomaticStyleDescription">Photoshop-style Saturation -75 is applied automatically to every image.</sys:String>
+    <sys:String x:Key="AutomaticStyleDescription">Images are automatically desaturated to match the visual style of Aniki ReMake.</sys:String>
     <sys:String x:Key="MainKeepsColors">The Main view keeps its original colors.</sys:String>
     <sys:String x:Key="ShowUiPreview">Show UI preview</sys:String>
-    <sys:String x:Key="PreviewOnlyNote">Preview only — never included in the exported image.</sys:String>
+    <sys:String x:Key="PreviewOnlyNote">Enabled: simulates the theme rendering and shows the UI when available. Disabled: shows the desaturated image without the theme color effect. Export is not affected.</sys:String>
     <sys:String x:Key="ExportVisualPackZip">Export Visual Pack ZIP</sys:String>
+    <sys:String x:Key="ShareCommunityPack">Share Community Pack</sys:String>
 
     <sys:String x:Key="AssetMainName">Main view</sys:String>
     <sys:String x:Key="AssetMainDescription">Main Fullscreen background and pack preview. Original colors are preserved.</sys:String>
@@ -68,6 +72,7 @@
     <sys:String x:Key="DialogOpenProject">Open Aniki Visual Pack project</sys:String>
     <sys:String x:Key="FilterOpenProject">Aniki Visual Pack project (*.avpc)|*.avpc|JSON files (*.json)|*.json</sys:String>
     <sys:String x:Key="StatusProjectOpened">Project opened: {0}</sys:String>
+    <sys:String x:Key="StatusLegacyProjectUpgraded">Project opened: {0} — Community metadata added. Save the project to keep its permanent pack ID.</sys:String>
     <sys:String x:Key="ErrorProjectOpen">The project could not be opened.</sys:String>
     <sys:String x:Key="DialogSaveProject">Save Aniki Visual Pack project</sys:String>
     <sys:String x:Key="FilterSaveProject">Aniki Visual Pack project (*.avpc)|*.avpc</sys:String>
@@ -81,11 +86,15 @@
     <sys:String x:Key="ExportSuccessMessage">The Visual Pack ZIP was generated and validated successfully.\n\n{0}</sys:String>
     <sys:String x:Key="ExportCompleteTitle">Export complete</sys:String>
     <sys:String x:Key="ErrorPackExport">The Visual Pack could not be exported.</sys:String>
+    <sys:String x:Key="StatusCommunitySubmissionOpened">Community Visual Pack submission page opened in your browser.</sys:String>
+    <sys:String x:Key="ErrorCommunitySubmissionOpen">The Community Visual Pack submission page could not be opened.</sys:String>
     <sys:String x:Key="StatusLoadedForAsset">Loaded {0} for {1}.</sys:String>
     <sys:String x:Key="ErrorUnsupportedImage">The selected file is not a supported image.</sys:String>
     <sys:String x:Key="StatusPreviewError">Preview error: {0}</sys:String>
     <sys:String x:Key="StatusUiPreviewError">UI preview could not be loaded: {0}</sys:String>
     <sys:String x:Key="ValidationEnterPackName">Enter a Visual Pack name.</sys:String>
+    <sys:String x:Key="ValidationEnterVersion">Enter a Visual Pack version.</sys:String>
+    <sys:String x:Key="ValidationInvalidVersion">Enter a valid semantic version, for example 1.0.0.</sys:String>
     <sys:String x:Key="ValidationMissingImages">Missing images: {0}</sys:String>
     <sys:String x:Key="StatusProjectValid">Project valid: all {0} images are ready.</sys:String>
     <sys:String x:Key="ValidationReadyMessage">The project is valid and ready to export.</sys:String>
@@ -97,11 +106,14 @@
 
     <sys:String x:Key="ServiceMissingSourceImages">Missing source images:\n{0}</sys:String>
     <sys:String x:Key="ServicePackNameRequired">A Visual Pack name is required.</sys:String>
+    <sys:String x:Key="ServicePackIdRequired">A permanent Visual Pack ID is required.</sys:String>
+    <sys:String x:Key="ServicePackVersionRequired">A Visual Pack version is required.</sys:String>
+    <sys:String x:Key="ServiceGeneratedManifestInvalid">The generated visualpack.json manifest is invalid or missing its permanent ID/version.</sys:String>
     <sys:String x:Key="ServiceGeneratedZipMissingFile">Generated ZIP is missing {0}.</sys:String>
     <sys:String x:Key="ServiceGeneratedInvalidDimensions">Generated {0} has invalid dimensions: {1}x{2} instead of {3}x{4}.</sys:String>
     <sys:String x:Key="ServiceProjectEmptyInvalid">The selected project is empty or invalid.</sys:String>
     <sys:String x:Key="ServiceUnsupportedFormatVersion">Unsupported project format version: {0}. Expected version 1.</sys:String>
 
-    <sys:String x:Key="StartupCouldNotStart">Aniki Visual Pack Creator could not start.</sys:String>
-    <sys:String x:Key="StartupErrorTitle">Aniki Visual Pack Creator — Startup error</sys:String>
+    <sys:String x:Key="StartupCouldNotStart">Aniki Pack Creator could not start.</sys:String>
+    <sys:String x:Key="StartupErrorTitle">Aniki Pack Creator — Startup error</sys:String>
 </ResourceDictionary>

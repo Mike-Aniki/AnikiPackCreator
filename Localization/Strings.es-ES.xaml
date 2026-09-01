@@ -1,4 +1,4 @@
-<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
     <sys:String x:Key="HeaderTitle">CREA TU VISUAL PACK</sys:String>
@@ -8,6 +8,9 @@
     <sys:String x:Key="SaveProject">Guardar proyecto</sys:String>
     <sys:String x:Key="PackName">NOMBRE DEL PACK</sys:String>
     <sys:String x:Key="Author">AUTOR</sys:String>
+    <sys:String x:Key="Version">VERSIÓN</sys:String>
+    <sys:String x:Key="Description">DESCRIPCIÓN</sys:String>
+    <sys:String x:Key="DefaultVersion">1.0.0</sys:String>
     <sys:String x:Key="DefaultPackName">Mi Visual Pack</sys:String>
     <sys:String x:Key="PackImages">IMÁGENES DEL PACK</sys:String>
     <sys:String x:Key="FillEmptyViews">Rellenar vistas vacías</sys:String>
@@ -19,11 +22,12 @@
     <sys:String x:Key="Zoom">ZOOM</sys:String>
     <sys:String x:Key="ResetPositionZoom">Restablecer posición y zoom</sys:String>
     <sys:String x:Key="AutomaticAnikiStyle">ESTILO ANIKI AUTOMÁTICO</sys:String>
-    <sys:String x:Key="AutomaticStyleDescription">Se aplica automáticamente a cada imagen una saturación de -75, al estilo de Photoshop.</sys:String>
+    <sys:String x:Key="AutomaticStyleDescription">Las imágenes se desaturan automáticamente para mantener el estilo visual de Aniki ReMake.</sys:String>
     <sys:String x:Key="MainKeepsColors">La vista principal conserva sus colores originales.</sys:String>
     <sys:String x:Key="ShowUiPreview">Mostrar vista previa de la interfaz</sys:String>
-    <sys:String x:Key="PreviewOnlyNote">Solo vista previa — nunca se incluye en la imagen exportada.</sys:String>
+    <sys:String x:Key="PreviewOnlyNote">Activado: simula el aspecto del tema y muestra la interfaz cuando está disponible. Desactivado: muestra la imagen desaturada sin el efecto de color del tema. La exportación no se modifica.</sys:String>
     <sys:String x:Key="ExportVisualPackZip">Exportar Visual Pack ZIP</sys:String>
+    <sys:String x:Key="ShareCommunityPack">Compartir pack comunitario</sys:String>
 
     <sys:String x:Key="AssetMainName">Vista principal</sys:String>
     <sys:String x:Key="AssetMainDescription">Fondo principal del modo Pantalla completa y vista previa del pack. Se conservan los colores originales.</sys:String>
@@ -68,6 +72,7 @@
     <sys:String x:Key="DialogOpenProject">Abrir proyecto de Aniki Visual Pack</sys:String>
     <sys:String x:Key="FilterOpenProject">Proyecto de Aniki Visual Pack (*.avpc)|*.avpc|Archivos JSON (*.json)|*.json</sys:String>
     <sys:String x:Key="StatusProjectOpened">Proyecto abierto: {0}</sys:String>
+    <sys:String x:Key="StatusLegacyProjectUpgraded">Proyecto abierto: {0} — se añadieron metadatos de comunidad. Guarda el proyecto para conservar su ID permanente.</sys:String>
     <sys:String x:Key="ErrorProjectOpen">No se pudo abrir el proyecto.</sys:String>
     <sys:String x:Key="DialogSaveProject">Guardar proyecto de Aniki Visual Pack</sys:String>
     <sys:String x:Key="FilterSaveProject">Proyecto de Aniki Visual Pack (*.avpc)|*.avpc</sys:String>
@@ -81,11 +86,15 @@
     <sys:String x:Key="ExportSuccessMessage">El ZIP del Visual Pack se ha generado y validado correctamente.\n\n{0}</sys:String>
     <sys:String x:Key="ExportCompleteTitle">Exportación completada</sys:String>
     <sys:String x:Key="ErrorPackExport">No se pudo exportar el Visual Pack.</sys:String>
+    <sys:String x:Key="StatusCommunitySubmissionOpened">La página de envío de Visual Packs comunitarios se abrió en tu navegador.</sys:String>
+    <sys:String x:Key="ErrorCommunitySubmissionOpen">No se pudo abrir la página de envío de Visual Packs comunitarios.</sys:String>
     <sys:String x:Key="StatusLoadedForAsset">{0} cargado para {1}.</sys:String>
     <sys:String x:Key="ErrorUnsupportedImage">El archivo seleccionado no es una imagen compatible.</sys:String>
     <sys:String x:Key="StatusPreviewError">Error de vista previa: {0}</sys:String>
     <sys:String x:Key="StatusUiPreviewError">No se pudo cargar la vista previa de la interfaz: {0}</sys:String>
     <sys:String x:Key="ValidationEnterPackName">Introduce un nombre para el Visual Pack.</sys:String>
+    <sys:String x:Key="ValidationEnterVersion">Introduce una versión para el Visual Pack.</sys:String>
+    <sys:String x:Key="ValidationInvalidVersion">Introduce una versión semántica válida, por ejemplo 1.0.0.</sys:String>
     <sys:String x:Key="ValidationMissingImages">Imágenes que faltan: {0}</sys:String>
     <sys:String x:Key="StatusProjectValid">Proyecto válido: las {0} imágenes están listas.</sys:String>
     <sys:String x:Key="ValidationReadyMessage">El proyecto es válido y está listo para exportarse.</sys:String>
@@ -97,11 +106,14 @@
 
     <sys:String x:Key="ServiceMissingSourceImages">Faltan imágenes de origen:\n{0}</sys:String>
     <sys:String x:Key="ServicePackNameRequired">Se requiere un nombre para el Visual Pack.</sys:String>
+    <sys:String x:Key="ServicePackIdRequired">Se requiere un ID permanente para el Visual Pack.</sys:String>
+    <sys:String x:Key="ServicePackVersionRequired">Se requiere una versión para el Visual Pack.</sys:String>
+    <sys:String x:Key="ServiceGeneratedManifestInvalid">El manifiesto visualpack.json generado no es válido o no contiene su ID permanente/versión.</sys:String>
     <sys:String x:Key="ServiceGeneratedZipMissingFile">Al ZIP generado le falta {0}.</sys:String>
     <sys:String x:Key="ServiceGeneratedInvalidDimensions">El archivo {0} generado tiene dimensiones incorrectas: {1}x{2} en lugar de {3}x{4}.</sys:String>
     <sys:String x:Key="ServiceProjectEmptyInvalid">El proyecto seleccionado está vacío o no es válido.</sys:String>
     <sys:String x:Key="ServiceUnsupportedFormatVersion">Versión de formato del proyecto no compatible: {0}. Se esperaba la versión 1.</sys:String>
 
-    <sys:String x:Key="StartupCouldNotStart">Aniki Visual Pack Creator no pudo iniciarse.</sys:String>
-    <sys:String x:Key="StartupErrorTitle">Aniki Visual Pack Creator — Error de inicio</sys:String>
+    <sys:String x:Key="StartupCouldNotStart">Aniki Pack Creator no pudo iniciarse.</sys:String>
+    <sys:String x:Key="StartupErrorTitle">Aniki Pack Creator — Error de inicio</sys:String>
 </ResourceDictionary>

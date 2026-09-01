@@ -1,4 +1,4 @@
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.IO;
 using System.Runtime.CompilerServices;
 using Loc = AnikiVisualPackCreator.Localization.LocalizationService;
@@ -46,7 +46,7 @@ public sealed class VisualPackAssetState : INotifyPropertyChanged
     public double Zoom
     {
         get => zoom;
-        set => SetField(ref zoom, Math.Clamp(value, 1.0, 3.0));
+        set => SetField(ref zoom, Math.Clamp(value, 0.75, 2.0));
     }
 
     public double PanX

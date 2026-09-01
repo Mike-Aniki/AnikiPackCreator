@@ -11,8 +11,11 @@ public static class VisualPackExportService
 {
     public static void Export(
         string destinationZipPath,
+        string packId,
         string packName,
         string author,
+        string version,
+        string description,
         IReadOnlyCollection<VisualPackAssetState> assets,
         Action<int, string>? progress = null)
     {
@@ -25,6 +28,16 @@ public static class VisualPackExportService
         if (string.IsNullOrWhiteSpace(packName))
         {
             throw new InvalidOperationException(Loc.Get("ServicePackNameRequired"));
+        }
+
+        if (string.IsNullOrWhiteSpace(packId))
+        {
+            throw new InvalidOperationException(Loc.Get("ServicePackIdRequired"));
+        }
+
+        if (string.IsNullOrWhiteSpace(version))
+        {
+            throw new InvalidOperationException(Loc.Get("ServicePackVersionRequired"));
         }
 
         var destinationDirectory = Path.GetDirectoryName(destinationZipPath);
@@ -58,15 +71,20 @@ public static class VisualPackExportService
                     ImageRenderService.EncodeJpeg(output, entryStream);
                 }
 
+                var creatorVersion = typeof(VisualPackExportService).Assembly.GetName().Version?.ToString(3) ?? "1.0.0";
                 var manifestEntry = archive.CreateEntry("visualpack.json", CompressionLevel.Optimal);
                 using var manifestStream = manifestEntry.Open();
                 JsonSerializer.Serialize(manifestStream, new
                 {
                     formatVersion = 1,
-                    id = CreatePackId(packName),
+                    id = packId.Trim(),
                     name = packName.Trim(),
                     author = author?.Trim() ?? string.Empty,
-                    builtInSeed = false
+                    version = version.Trim(),
+                    description = description?.Trim() ?? string.Empty,
+                    builtInSeed = false,
+                    createdWith = "Aniki Pack Creator",
+                    creatorVersion
                 }, new JsonSerializerOptions { WriteIndented = true });
             }
 
@@ -124,28 +142,20 @@ public static class VisualPackExportService
             }
         }
 
-        if (!archive.Entries.Any(item =>
-                string.Equals(item.FullName, "visualpack.json", StringComparison.OrdinalIgnoreCase)))
+        var manifestEntry = archive.Entries.SingleOrDefault(item =>
+            string.Equals(item.FullName, "visualpack.json", StringComparison.OrdinalIgnoreCase));
+        if (manifestEntry is null)
         {
             throw new InvalidDataException(Loc.Format("ServiceGeneratedZipMissingFile", "visualpack.json"));
         }
-    }
 
-    private static string CreatePackId(string packName)
-    {
-        var characters = packName
-            .Trim()
-            .ToLowerInvariant()
-            .Select(character => char.IsLetterOrDigit(character) ? character : '-')
-            .ToArray();
-        var value = new string(characters);
-
-        while (value.Contains("--", StringComparison.Ordinal))
+        using var manifestStream = manifestEntry.Open();
+        using var manifestDocument = JsonDocument.Parse(manifestStream);
+        var root = manifestDocument.RootElement;
+        if (!root.TryGetProperty("id", out var id) || string.IsNullOrWhiteSpace(id.GetString()) ||
+            !root.TryGetProperty("version", out var version) || string.IsNullOrWhiteSpace(version.GetString()))
         {
-            value = value.Replace("--", "-", StringComparison.Ordinal);
+            throw new InvalidDataException(Loc.Get("ServiceGeneratedManifestInvalid"));
         }
-
-        value = value.Trim('-');
-        return string.IsNullOrWhiteSpace(value) ? "custom-visual-pack" : value;
     }
 }
