@@ -1,0 +1,206 @@
+﻿<Window x:Class="AnikiVisualPackCreator.PackCreatorWindow"
+        x:Name="Root"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:AnikiVisualPackCreator"
+        xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
+        Title="Aniki Pack Creator"
+        Icon="/AnikiPackCreator;component/Assets/AnikiPackCreator.ico"
+        Width="1360"
+        Height="900"
+        MinWidth="1120"
+        MinHeight="760"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        ResizeMode="CanResize"
+        Background="{StaticResource WindowBrush}"
+        Closing="WindowClosing"
+        Closed="WindowClosed"
+        StateChanged="WindowStateChanged">
+
+    <WindowChrome.WindowChrome>
+        <shell:WindowChrome CaptionHeight="0"
+                            ResizeBorderThickness="6"
+                            CornerRadius="0"
+                            GlassFrameThickness="0"
+                            UseAeroCaptionButtons="False"/>
+    </WindowChrome.WindowChrome>
+
+    <Window.Resources>
+        <Style x:Key="CreatorTabStyle" TargetType="RadioButton">
+            <Setter Property="Foreground" Value="{StaticResource MutedTextBrush}"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="18,13,18,11"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Grid>
+                            <Border x:Name="HoverBackground"
+                                    Background="{TemplateBinding Background}"
+                                    CornerRadius="6,6,0,0">
+                                <ContentPresenter HorizontalAlignment="Center"
+                                                  VerticalAlignment="Center"
+                                                  Margin="{TemplateBinding Padding}"/>
+                            </Border>
+                            <Border x:Name="ActiveLine"
+                                    Height="3"
+                                    VerticalAlignment="Bottom"
+                                    Margin="10,0"
+                                    CornerRadius="2"
+                                    Background="Transparent"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="HoverBackground" Property="Background" Value="#FF182129"/>
+                                <Setter Property="Foreground" Value="{StaticResource TextBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="HoverBackground" Property="Background" Value="#FF172129"/>
+                                <Setter TargetName="ActiveLine" Property="Background" Value="{StaticResource AccentBrush}"/>
+                                <Setter Property="Foreground" Value="{StaticResource AccentBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="WindowControlButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="44"/>
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Foreground" Value="{StaticResource MutedTextBrush}"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#FF26323C"/>
+                                <Setter Property="Foreground" Value="{StaticResource TextBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#FF34424D"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0"
+                Background="#FF10161C"
+                BorderBrush="{StaticResource BorderBrush}"
+                BorderThickness="0,0,0,1"
+                MouseLeftButtonDown="HeaderMouseLeftButtonDown">
+            <Grid Margin="18,7,18,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Bottom">
+                    <RadioButton x:Name="HomeTab"
+                                 GroupName="CreatorTabs"
+                                 Content="{DynamicResource TabHome}"
+                                 Style="{StaticResource CreatorTabStyle}"
+                                 IsChecked="True"
+                                 Checked="HomeTabChecked"/>
+                    <RadioButton x:Name="VisualPackTab"
+                                 GroupName="CreatorTabs"
+                                 Content="{DynamicResource TabVisualPack}"
+                                 Style="{StaticResource CreatorTabStyle}"
+                                 Margin="4,0,0,0"
+                                 Checked="VisualPackTabChecked"/>
+                    <RadioButton x:Name="SoundPackTab"
+                                 GroupName="CreatorTabs"
+                                 Content="{DynamicResource TabSoundPack}"
+                                 Style="{StaticResource CreatorTabStyle}"
+                                 Margin="4,0,0,0"
+                                 Checked="SoundPackTabChecked"/>
+                    <RadioButton x:Name="ColorPackTab"
+                                 GroupName="CreatorTabs"
+                                 Content="{DynamicResource TabColorPack}"
+                                 Style="{StaticResource CreatorTabStyle}"
+                                 Margin="4,0,0,0"
+                                 Checked="ColorPackTabChecked"/>
+                    <RadioButton x:Name="LoginPackTab"
+                                 GroupName="CreatorTabs"
+                                 Content="{DynamicResource TabLoginPack}"
+                                 Style="{StaticResource CreatorTabStyle}"
+                                 Margin="4,0,0,0"
+                                 Checked="LoginPackTabChecked"/>
+                    <RadioButton x:Name="CompletePackTab"
+                                 GroupName="CreatorTabs"
+                                 Content="{DynamicResource TabCompletePack}"
+                                 Style="{StaticResource CreatorTabStyle}"
+                                 Margin="4,0,0,0"
+                                 Checked="CompletePackTabChecked"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="2"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Top"
+                            Margin="12,0,-8,0">
+                    <Button x:Name="MinimizeButton"
+                            Style="{StaticResource WindowControlButtonStyle}"
+                            Click="MinimizeButtonClick"
+                            ToolTip="Minimize">
+                        <TextBlock FontFamily="Segoe MDL2 Assets"
+                                   FontSize="11"
+                                   Text="&#xE921;"/>
+                    </Button>
+                    <Button x:Name="MaximizeButton"
+                            Style="{StaticResource WindowControlButtonStyle}"
+                            Click="MaximizeButtonClick"
+                            ToolTip="Maximize">
+                        <TextBlock x:Name="MaximizeGlyph"
+                                   FontFamily="Segoe MDL2 Assets"
+                                   FontSize="10"
+                                   Text="&#xE922;"/>
+                    </Button>
+                    <Button x:Name="CloseButton"
+                            Style="{StaticResource WindowControlButtonStyle}"
+                            Click="CloseButtonClick"
+                            ToolTip="Close">
+                        <TextBlock FontFamily="Segoe MDL2 Assets"
+                                   FontSize="11"
+                                   Text="&#xE8BB;"/>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="1">
+            <local:MainWindow x:Name="VisualPackView"/>
+            <local:SoundPackWindow x:Name="SoundPackView" Visibility="Collapsed"/>
+            <local:ColorPackWindow x:Name="ColorPackView" Visibility="Collapsed"/>
+            <ContentControl x:Name="LoginPackHost" Visibility="Collapsed"/>
+            <ContentControl x:Name="CompletePackHost" Visibility="Collapsed"/>
+            <ContentControl x:Name="AboutHost" Visibility="Collapsed"/>
+        </Grid>
+    </Grid>
+</Window>

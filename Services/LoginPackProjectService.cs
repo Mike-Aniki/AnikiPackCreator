@@ -1,11 +1,10 @@
-﻿using AnikiVisualPackCreator.Models;
+using AnikiVisualPackCreator.Models;
 using Loc = AnikiVisualPackCreator.Localization.LocalizationService;
-using System.IO;
 using System.Text.Json;
 
 namespace AnikiVisualPackCreator.Services;
 
-public static class VisualPackProjectService
+public static class LoginPackProjectService
 {
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
@@ -19,36 +18,29 @@ public static class VisualPackProjectService
         string author,
         string version,
         string description,
-        IEnumerable<VisualPackAssetState> assets)
+        string? videoSourcePath)
     {
         var projectDirectory = Path.GetDirectoryName(projectPath) ?? Environment.CurrentDirectory;
         Directory.CreateDirectory(projectDirectory);
 
-        var document = new VisualPackProjectDocument
+        var document = new LoginPackProjectDocument
         {
             PackId = packId?.Trim() ?? string.Empty,
             PackName = packName?.Trim() ?? string.Empty,
             Author = author?.Trim() ?? string.Empty,
             Version = string.IsNullOrWhiteSpace(version) ? "1.0.0" : version.Trim(),
             Description = description?.Trim() ?? string.Empty,
-            Assets = assets.Select(asset => new VisualPackAssetProjectState
-            {
-                FileName = asset.FileName,
-                SourcePath = MakePortablePath(projectDirectory, asset.SourcePath),
-                Zoom = asset.Zoom,
-                PanX = asset.PanX,
-                PanY = asset.PanY
-            }).ToList()
+            VideoSourcePath = MakePortablePath(projectDirectory, videoSourcePath)
         };
 
         File.WriteAllText(projectPath, JsonSerializer.Serialize(document, JsonOptions));
     }
 
-    public static VisualPackProjectDocument Load(string projectPath)
+    public static LoginPackProjectDocument Load(string projectPath)
     {
         var json = File.ReadAllText(projectPath);
-        var document = JsonSerializer.Deserialize<VisualPackProjectDocument>(json, JsonOptions)
-            ?? throw new InvalidDataException(Loc.Get("ServiceProjectEmptyInvalid"));
+        var document = JsonSerializer.Deserialize<LoginPackProjectDocument>(json, JsonOptions)
+            ?? throw new InvalidDataException(Loc.Get("ServiceLoginProjectEmptyInvalid"));
 
         if (document.FormatVersion != 1)
         {
@@ -60,15 +52,11 @@ public static class VisualPackProjectService
         document.Author ??= string.Empty;
         document.Version = string.IsNullOrWhiteSpace(document.Version) ? "1.0.0" : document.Version.Trim();
         document.Description ??= string.Empty;
-        document.Assets ??= [];
 
         var projectDirectory = Path.GetDirectoryName(projectPath) ?? Environment.CurrentDirectory;
-        foreach (var asset in document.Assets)
+        if (!string.IsNullOrWhiteSpace(document.VideoSourcePath) && !Path.IsPathRooted(document.VideoSourcePath))
         {
-            if (!string.IsNullOrWhiteSpace(asset.SourcePath) && !Path.IsPathRooted(asset.SourcePath))
-            {
-                asset.SourcePath = Path.GetFullPath(Path.Combine(projectDirectory, asset.SourcePath));
-            }
+            document.VideoSourcePath = Path.GetFullPath(Path.Combine(projectDirectory, document.VideoSourcePath));
         }
 
         return document;

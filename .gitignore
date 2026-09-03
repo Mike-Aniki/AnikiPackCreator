@@ -5,3 +5,8 @@ publish/
 *.suo
 *.avpc
 *.zip
+*.aspc
+.vs/
+*.acpc
+*.alpc
+*.acmp

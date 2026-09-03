@@ -1,0 +1,432 @@
+<UserControl x:Class="AnikiVisualPackCreator.LoginPackWindow"
+             x:Name="Root"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="{StaticResource WindowBrush}">
+
+    <UserControl.Resources>
+        <Style x:Key="CardStyle" TargetType="Border">
+            <Setter Property="Background" Value="{StaticResource PanelBrush}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="Padding" Value="14"/>
+        </Style>
+
+        <Style x:Key="SectionTitle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource AccentBrush}"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Margin" Value="0,0,0,10"/>
+        </Style>
+
+        <Style x:Key="ValueLabelStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource MutedTextBrush}"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Margin" Value="0,0,0,4"/>
+        </Style>
+
+        <Style x:Key="ValueTextStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource TextBrush}"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="Margin" Value="0,0,0,12"/>
+        </Style>
+
+        <Style x:Key="PackListScrollBar" TargetType="{x:Type ScrollBar}">
+            <Setter Property="Width" Value="11"/>
+            <Setter Property="Margin" Value="6,0,0,0"/>
+            <Setter Property="Background" Value="#FF0E141A"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ScrollBar}">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="#FF25343E"
+                                BorderThickness="1"
+                                CornerRadius="5"
+                                SnapsToDevicePixels="True">
+                            <Track x:Name="PART_Track"
+                                   Margin="2"
+                                   IsDirectionReversed="True"
+                                   ViewportSize="{TemplateBinding ViewportSize}"
+                                   Focusable="False">
+                                <Track.DecreaseRepeatButton>
+                                    <RepeatButton Command="{x:Static ScrollBar.PageUpCommand}"
+                                                  CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}"
+                                                  Focusable="False"
+                                                  IsTabStop="False">
+                                        <RepeatButton.Template>
+                                            <ControlTemplate TargetType="{x:Type RepeatButton}">
+                                                <Border Background="Transparent"/>
+                                            </ControlTemplate>
+                                        </RepeatButton.Template>
+                                    </RepeatButton>
+                                </Track.DecreaseRepeatButton>
+
+                                <Track.Thumb>
+                                    <Thumb MinHeight="44"
+                                           Background="#FF31505A">
+                                        <Thumb.Template>
+                                            <ControlTemplate TargetType="{x:Type Thumb}">
+                                                <Border x:Name="ThumbBorder"
+                                                        Background="{TemplateBinding Background}"
+                                                        CornerRadius="4"/>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter TargetName="ThumbBorder" Property="Background" Value="#FF3A8592"/>
+                                                    </Trigger>
+                                                    <Trigger Property="IsDragging" Value="True">
+                                                        <Setter TargetName="ThumbBorder" Property="Background" Value="{StaticResource CyanBrush}"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Thumb.Template>
+                                    </Thumb>
+                                </Track.Thumb>
+
+                                <Track.IncreaseRepeatButton>
+                                    <RepeatButton Command="{x:Static ScrollBar.PageDownCommand}"
+                                                  CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}"
+                                                  Focusable="False"
+                                                  IsTabStop="False">
+                                        <RepeatButton.Template>
+                                            <ControlTemplate TargetType="{x:Type RepeatButton}">
+                                                <Border Background="Transparent"/>
+                                            </ControlTemplate>
+                                        </RepeatButton.Template>
+                                    </RepeatButton>
+                                </Track.IncreaseRepeatButton>
+                            </Track>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Margin="18">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="12"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0"
+                Style="{StaticResource CardStyle}"
+                Padding="18,12">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="240"/>
+                    <ColumnDefinition Width="14"/>
+                    <ColumnDefinition Width="180"/>
+                    <ColumnDefinition Width="14"/>
+                    <ColumnDefinition Width="110"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid Grid.RowSpan="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Image Width="54"
+                               Height="54"
+                               Margin="0,0,14,0"
+                               Source="/AnikiPackCreator;component/Assets/AppIcon.png"
+                               Stretch="Uniform"
+                               RenderOptions.BitmapScalingMode="HighQuality"/>
+
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                            <TextBlock Text="{DynamicResource LoginHeaderTitle}"
+                                       Foreground="{StaticResource AccentBrush}"
+                                       FontWeight="Bold"
+                                       FontSize="20"/>
+                            <TextBlock Text="{DynamicResource LoginHeaderSubtitle}"
+                                       Foreground="{StaticResource MutedTextBrush}"
+                                       Margin="0,3,0,0"
+                                       TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,10,0,0">
+                        <Button Content="{DynamicResource NewProject}"
+                                Click="NewProjectClick"
+                                Style="{StaticResource SecondaryButton}"
+                                MinWidth="104"/>
+                        <Button Content="{DynamicResource OpenProject}"
+                                Click="OpenProjectClick"
+                                Style="{StaticResource SecondaryButton}"
+                                MinWidth="104"
+                                Margin="8,0,0,0"/>
+                        <Button Content="{DynamicResource SaveProject}"
+                                Click="SaveProjectClick"
+                                Style="{StaticResource SecondaryButton}"
+                                MinWidth="104"
+                                Margin="8,0,0,0"/>
+                    </StackPanel>
+                </Grid>
+
+                <StackPanel Grid.Row="0" Grid.Column="2" VerticalAlignment="Center">
+                    <Label Content="{DynamicResource PackName}"/>
+                    <TextBox x:Name="PackNameTextBox"
+                             Text="{DynamicResource DefaultLoginPackName}"
+                             TextChanged="MetadataTextChanged"/>
+                </StackPanel>
+
+                <StackPanel Grid.Row="0" Grid.Column="4" VerticalAlignment="Center">
+                    <Label Content="{DynamicResource Author}"/>
+                    <TextBox x:Name="AuthorTextBox"
+                             TextChanged="MetadataTextChanged"/>
+                </StackPanel>
+
+                <StackPanel Grid.Row="0" Grid.Column="6" VerticalAlignment="Center">
+                    <Label Content="{DynamicResource Version}"/>
+                    <TextBox x:Name="VersionTextBox"
+                             Text="{DynamicResource DefaultVersion}"
+                             TextChanged="MetadataTextChanged"/>
+                </StackPanel>
+
+                <StackPanel Grid.Row="1"
+                            Grid.Column="2"
+                            Grid.ColumnSpan="5"
+                            Margin="0,8,0,0">
+                    <Label Content="{DynamicResource Description}"/>
+                    <TextBox x:Name="DescriptionTextBox"
+                             TextChanged="MetadataTextChanged"
+                             AcceptsReturn="True"
+                             Height="58"
+                             VerticalScrollBarVisibility="Auto"
+                             TextWrapping="Wrap"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="12"/>
+                <ColumnDefinition Width="360"/>
+            </Grid.ColumnDefinitions>
+<Border Grid.Column="0"
+                    Style="{StaticResource CardStyle}"
+                    Padding="18">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="12"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="12"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel>
+                        <TextBlock Text="{DynamicResource LoginVideoSectionTitle}"
+                                   FontSize="20"
+                                   FontWeight="Bold"
+                                   Foreground="{StaticResource AccentBrush}"/>
+                        <TextBlock Text="{DynamicResource LoginVideoSectionHint}"
+                                   Foreground="{StaticResource MutedTextBrush}"
+                                   FontSize="11"
+                                   TextWrapping="Wrap"
+                                   Margin="0,4,0,0"/>
+                    </StackPanel>
+
+                    <Border Grid.Row="2"
+                            x:Name="VideoDropBorder"
+                            Background="#FF0E141A"
+                            BorderBrush="{StaticResource BorderBrush}"
+                            BorderThickness="1"
+                            CornerRadius="10"
+                            Padding="8"
+                            MinHeight="210"
+                            MaxHeight="310"
+                            AllowDrop="True"
+                            DragOver="VideoDropBorderDragOver"
+                            Drop="VideoDropBorderDrop">
+                        <Grid>
+                            <MediaElement x:Name="PreviewPlayer"
+                                          LoadedBehavior="Manual"
+                                          UnloadedBehavior="Manual"
+                                          Stretch="Uniform"
+                                          IsMuted="True"
+                                          ScrubbingEnabled="True"
+                                          MediaEnded="PreviewPlayerMediaEnded"
+                                          MediaFailed="PreviewPlayerMediaFailed"/>
+
+                            <Border x:Name="PreviewPlaceholder"
+                                    Background="#FF101820"
+                                    CornerRadius="8">
+                                <StackPanel HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Margin="24">
+                                    <TextBlock Text="{DynamicResource LoginPreviewStatusEmpty}"
+                                               FontSize="17"
+                                               FontWeight="SemiBold"
+                                               HorizontalAlignment="Center"
+                                               TextAlignment="Center"/>
+                                    <TextBlock Text="{DynamicResource LoginDropHint}"
+                                               Foreground="{StaticResource MutedTextBrush}"
+                                               FontSize="11"
+                                               Margin="0,8,0,0"
+                                               HorizontalAlignment="Center"
+                                               TextAlignment="Center"/>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+                    </Border>
+
+                    <Grid Grid.Row="4">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Button Grid.Row="0" Grid.Column="0"
+                                Content="{DynamicResource LoginSelectVideo}"
+                                Click="SelectVideoClick"
+                                MinWidth="120"/>
+                        <Button Grid.Row="0" Grid.Column="1"
+                                x:Name="ClearVideoButton"
+                                Content="{DynamicResource LoginClearVideo}"
+                                Click="ClearVideoClick"
+                                Style="{StaticResource SecondaryButton}"
+                                MinWidth="84"
+                                Margin="8,0,0,0"/>
+                        <Button Grid.Row="0" Grid.Column="2"
+                                x:Name="RestartPreviewButton"
+                                Content="{DynamicResource LoginRestartPreview}"
+                                Click="RestartPreviewClick"
+                                Style="{StaticResource SecondaryButton}"
+                                MinWidth="128"
+                                Margin="8,0,0,0"/>
+
+                        <StackPanel Grid.Row="1"
+                                    Grid.Column="0"
+                                    Grid.ColumnSpan="4"
+                                    Margin="0,10,0,0">
+                            <TextBlock x:Name="SelectedFileTextBlock"
+                                       FontSize="13"
+                                       FontWeight="SemiBold"
+                                       Text="{DynamicResource LoginPreviewStatusEmpty}"
+                                       TextTrimming="CharacterEllipsis"/>
+                            <TextBlock x:Name="SelectedFileInfoTextBlock"
+                                       Foreground="{StaticResource MutedTextBrush}"
+                                       FontSize="11"
+                                       Text="{DynamicResource LoginDropHint}"
+                                       Margin="0,3,0,0"
+                                       TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+            </Border>
+<Border Grid.Column="2"
+                    Style="{StaticResource CardStyle}"
+                    Padding="16">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel>
+                        <TextBlock Text="{DynamicResource LoginSummaryTitle}"
+                                   Style="{StaticResource SectionTitle}"/>
+
+                        <Border Background="#FF0E141A"
+                                BorderBrush="{StaticResource BorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="6"
+                                Padding="12">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="118"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Row="0" Text="{DynamicResource LoginSummaryCodec}" Foreground="{StaticResource MutedTextBrush}" FontSize="11" Margin="0,0,8,7"/>
+                                <TextBlock Grid.Row="0" Grid.Column="1" x:Name="VideoCodecValueTextBlock" Text="—" FontSize="11" FontWeight="SemiBold" TextWrapping="Wrap" Margin="0,0,0,7"/>
+
+                                <TextBlock Grid.Row="1" Text="{DynamicResource LoginSummaryResolution}" Foreground="{StaticResource MutedTextBrush}" FontSize="11" Margin="0,0,8,7"/>
+                                <TextBlock Grid.Row="1" Grid.Column="1" x:Name="ResolutionValueTextBlock" Text="—" FontSize="11" FontWeight="SemiBold" Margin="0,0,0,7"/>
+
+                                <TextBlock Grid.Row="2" Text="{DynamicResource LoginSummaryDuration}" Foreground="{StaticResource MutedTextBrush}" FontSize="11" Margin="0,0,8,7"/>
+                                <TextBlock Grid.Row="2" Grid.Column="1" x:Name="DurationValueTextBlock" Text="—" FontSize="11" FontWeight="SemiBold" Margin="0,0,0,7"/>
+
+                                <TextBlock Grid.Row="3" Text="{DynamicResource LoginSummarySize}" Foreground="{StaticResource MutedTextBrush}" FontSize="11" Margin="0,0,8,7"/>
+                                <TextBlock Grid.Row="3" Grid.Column="1" x:Name="SizeValueTextBlock" Text="—" FontSize="11" FontWeight="SemiBold" Margin="0,0,0,7"/>
+
+                                <TextBlock Grid.Row="4" Text="{DynamicResource LoginSummaryAudio}" Foreground="{StaticResource MutedTextBrush}" FontSize="11" Margin="0,0,8,7"/>
+                                <TextBlock Grid.Row="4" Grid.Column="1" x:Name="AudioValueTextBlock" Text="—" FontSize="11" FontWeight="SemiBold" TextWrapping="Wrap" Margin="0,0,0,7"/>
+
+                                <TextBlock Grid.Row="5" Text="{DynamicResource LoginSummaryCompatibility}" Foreground="{StaticResource MutedTextBrush}" FontSize="11" Margin="0,0,8,0"/>
+                                <TextBlock Grid.Row="5" Grid.Column="1" x:Name="CompatibilityValueTextBlock" Text="—" FontSize="11" FontWeight="SemiBold" TextWrapping="Wrap"/>
+                            </Grid>
+                        </Border>
+
+                        <TextBlock Text="{DynamicResource LoginRulesTitle}"
+                                   FontWeight="SemiBold"
+                                   Margin="0,16,0,5"/>
+                        <TextBlock Text="{DynamicResource LoginRulesText}"
+                                   Foreground="{StaticResource MutedTextBrush}"
+                                   TextWrapping="Wrap"
+                                   FontSize="11"/>
+                        <TextBlock Text="{DynamicResource LoginRulesHint}"
+                                   Foreground="{StaticResource CyanBrush}"
+                                   TextWrapping="Wrap"
+                                   FontSize="10"
+                                   Margin="0,8,0,0"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="2" Margin="0,16,0,0">
+                        <TextBlock x:Name="StatusTextBlock"
+                                   Text="{DynamicResource LoginStatusSelect}"
+                                   Foreground="{StaticResource MutedTextBrush}"
+                                   FontSize="11"
+                                   TextWrapping="Wrap"
+                                   TextTrimming="CharacterEllipsis"
+                                   MaxHeight="48"
+                                   Margin="0,0,0,10"/>
+                        <Button Content="{DynamicResource ExportLoginPackZip}"
+                                Click="ExportZipClick"
+                                Background="#FF7A5826"
+                                BorderBrush="{StaticResource AccentBrush}"
+                                Padding="14,9"/>
+                        <Button Content="{DynamicResource ShareCommunityPack}"
+                                Click="ShareCommunityPackClick"
+                                Style="{StaticResource SecondaryButton}"
+                                Padding="14,9"
+                                Margin="0,8,0,0"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

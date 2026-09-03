@@ -1,4 +1,4 @@
-using System.Globalization;
+﻿using System.Globalization;
 using System.Windows;
 
 namespace AnikiVisualPackCreator.Localization;
@@ -11,7 +11,6 @@ public static class LocalizationService
 
     public static void Initialize()
     {
-        // English is always loaded first and acts as the fallback for any missing key.
         TryLoadDictionary(EnglishDictionary);
 
         var language = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName.ToLowerInvariant();

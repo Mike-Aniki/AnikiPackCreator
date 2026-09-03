@@ -1,14 +1,15 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <AssemblyName>AnikiPackCreator</AssemblyName>
     <RootNamespace>AnikiVisualPackCreator</RootNamespace>
     <ApplicationManifest>app.manifest</ApplicationManifest>
-    <ApplicationIcon>Assets\AnikiVisualPackCreator.ico</ApplicationIcon>
+    <ApplicationIcon>Assets\AnikiPackCreator.ico</ApplicationIcon>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <SelfContained>true</SelfContained>
     <PublishSingleFile>true</PublishSingleFile>
@@ -17,8 +18,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Resource Include="Assets\AnikiVisualPackCreator.ico" />
+    <Resource Include="Assets\AnikiPackCreator.ico" />
     <Resource Include="Assets\AppIcon.png" />
+    <Resource Include="Assets\ColorPackPreviewBackground.jpeg" />
     <Resource Include="Assets\PreviewOverlays\*.png" />
+    <Page Remove="Templates\3.GoldenGraphite.xaml" />
+    <EmbeddedResource Include="Templates\3.GoldenGraphite.xaml" LogicalName="AnikiPackCreator.GoldenGraphiteTemplate.xaml" />
   </ItemGroup>
 </Project>

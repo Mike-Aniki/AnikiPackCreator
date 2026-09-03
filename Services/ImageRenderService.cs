@@ -39,8 +39,6 @@ public static class ImageRenderService
         var renderedWidth = sourceWidth * scale;
         var renderedHeight = sourceHeight * scale;
 
-        // Keep the artwork centered at PanX/PanY = 0 for both zoom-in and zoom-out.
-        // When zoomed out, the uncovered export area intentionally stays black.
         var centeredX = (outputWidth - renderedWidth) / 2.0;
         var centeredY = (outputHeight - renderedHeight) / 2.0;
         var panTravelX = Math.Abs(outputWidth - renderedWidth) / 2.0;
@@ -88,14 +86,11 @@ public static class ImageRenderService
         var renderedImage = Render(source, outputWidth, outputHeight, state);
         var fileName = state.FileName;
 
-        // With the UI/theme preview disabled, show the processed artwork itself:
-        // Aniki desaturation is preserved, but no theme background/tint is simulated.
         if (!applyThemeEffect)
         {
             return renderedImage;
         }
 
-        // Main View and Login display the exported artwork directly in the theme.
         if (string.Equals(fileName, "MainBackground.jpg", StringComparison.OrdinalIgnoreCase) ||
             string.Equals(fileName, "Login.jpg", StringComparison.OrdinalIgnoreCase))
         {
@@ -155,8 +150,6 @@ public static class ImageRenderService
 
     private static double GetThemeImageOpacity(string fileName)
     {
-        // The editor preview is intentionally a little brighter than the exact theme
-        // values so artwork remains readable while still closely matching Aniki ReMake.
         if (fileName.Equals("FriendsView.jpg", StringComparison.OrdinalIgnoreCase) ||
             fileName.Equals("AchievementsView.jpg", StringComparison.OrdinalIgnoreCase))
         {
@@ -168,7 +161,6 @@ public static class ImageRenderService
             return 0.25;
         }
 
-        // Views using 10% in the theme use 15% in the editor preview.
         return 0.15;
     }
 
@@ -262,8 +254,6 @@ public static class ImageRenderService
             return;
         }
 
-        // ZipArchiveEntry streams are not seekable, while WPF bitmap encoders
-        // require a seekable destination. Encode in memory, then copy the JPEG.
         using var buffer = new MemoryStream();
         encoder.Save(buffer);
         buffer.Position = 0;

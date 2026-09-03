@@ -1,11 +1,11 @@
-﻿using AnikiVisualPackCreator.Models;
+using AnikiVisualPackCreator.Models;
 using Loc = AnikiVisualPackCreator.Localization.LocalizationService;
 using System.IO;
 using System.Text.Json;
 
 namespace AnikiVisualPackCreator.Services;
 
-public static class VisualPackProjectService
+public static class SoundPackProjectService
 {
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
@@ -19,36 +19,33 @@ public static class VisualPackProjectService
         string author,
         string version,
         string description,
-        IEnumerable<VisualPackAssetState> assets)
+        IEnumerable<SoundPackSoundState> sounds)
     {
         var projectDirectory = Path.GetDirectoryName(projectPath) ?? Environment.CurrentDirectory;
         Directory.CreateDirectory(projectDirectory);
 
-        var document = new VisualPackProjectDocument
+        var document = new SoundPackProjectDocument
         {
             PackId = packId?.Trim() ?? string.Empty,
             PackName = packName?.Trim() ?? string.Empty,
             Author = author?.Trim() ?? string.Empty,
             Version = string.IsNullOrWhiteSpace(version) ? "1.0.0" : version.Trim(),
             Description = description?.Trim() ?? string.Empty,
-            Assets = assets.Select(asset => new VisualPackAssetProjectState
+            Sounds = sounds.Select(sound => new SoundPackSoundProjectState
             {
-                FileName = asset.FileName,
-                SourcePath = MakePortablePath(projectDirectory, asset.SourcePath),
-                Zoom = asset.Zoom,
-                PanX = asset.PanX,
-                PanY = asset.PanY
+                Key = sound.Key,
+                SourcePath = MakePortablePath(projectDirectory, sound.SourcePath)
             }).ToList()
         };
 
         File.WriteAllText(projectPath, JsonSerializer.Serialize(document, JsonOptions));
     }
 
-    public static VisualPackProjectDocument Load(string projectPath)
+    public static SoundPackProjectDocument Load(string projectPath)
     {
         var json = File.ReadAllText(projectPath);
-        var document = JsonSerializer.Deserialize<VisualPackProjectDocument>(json, JsonOptions)
-            ?? throw new InvalidDataException(Loc.Get("ServiceProjectEmptyInvalid"));
+        var document = JsonSerializer.Deserialize<SoundPackProjectDocument>(json, JsonOptions)
+            ?? throw new InvalidDataException(Loc.Get("ServiceSoundProjectEmptyInvalid"));
 
         if (document.FormatVersion != 1)
         {
@@ -60,14 +57,14 @@ public static class VisualPackProjectService
         document.Author ??= string.Empty;
         document.Version = string.IsNullOrWhiteSpace(document.Version) ? "1.0.0" : document.Version.Trim();
         document.Description ??= string.Empty;
-        document.Assets ??= [];
+        document.Sounds ??= [];
 
         var projectDirectory = Path.GetDirectoryName(projectPath) ?? Environment.CurrentDirectory;
-        foreach (var asset in document.Assets)
+        foreach (var sound in document.Sounds)
         {
-            if (!string.IsNullOrWhiteSpace(asset.SourcePath) && !Path.IsPathRooted(asset.SourcePath))
+            if (!string.IsNullOrWhiteSpace(sound.SourcePath) && !Path.IsPathRooted(sound.SourcePath))
             {
-                asset.SourcePath = Path.GetFullPath(Path.Combine(projectDirectory, asset.SourcePath));
+                sound.SourcePath = Path.GetFullPath(Path.Combine(projectDirectory, sound.SourcePath));
             }
         }
 
