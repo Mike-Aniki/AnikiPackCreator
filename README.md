@@ -45,7 +45,7 @@ Add your content, preview it, save your project and export a ZIP ready for **Ani
 
 ---
 
-## 🖼️ Visual Packs
+## Visual Packs
 
 Create the **14 images** used throughout Aniki ReMake.
 
@@ -61,7 +61,7 @@ Create the **14 images** used throughout Aniki ReMake.
 
 ---
 
-## 🔊 Sound Packs
+## Sound Packs
 
 Replace Aniki ReMake sounds and ambient music.
 
@@ -76,7 +76,7 @@ Replace Aniki ReMake sounds and ambient music.
 
 ---
 
-## 🎨 Color Packs
+## Color Packs
 
 Create a complete theme palette using only **15 master colors**.
 
@@ -88,7 +88,7 @@ The Creator automatically generates the rest of the Aniki ReMake palette and pro
 
 ---
 
-## 🎬 Login Packs
+## Login Packs
 
 Create your own animated login background.
 
@@ -98,7 +98,7 @@ Create your own animated login background.
 
 ---
 
-## 📦 Complete Packs
+## Complete Packs
 
 Bundle matching packs together:
 
@@ -135,16 +135,16 @@ A brand-new project gets a new Pack ID and is treated as a different pack.
 
 Use **Share Community Pack** inside the Creator when your pack is ready.
 
-👉 **[Open Aniki Community Packs](https://github.com/Mike-Aniki/AnikiCommunityPacks)**
+**[Open Aniki Community Packs](https://github.com/Mike-Aniki/AnikiCommunityPacks)**
 
 ---
 
 ## Aniki ecosystem
 
-- 🎮 **[Aniki ReMake](https://github.com/Mike-Aniki/Aniki-ReMake)** — Fullscreen Playnite theme
-- 🧩 **[Aniki Helper](https://github.com/Mike-Aniki/AnikiHelper)** — Companion plugin used to install and manage packs
-- 🌐 **[Aniki Community Packs](https://github.com/Mike-Aniki/AnikiCommunityPacks)** — Browse and share community creations
-- 🛠️ **[Aniki Pack Creator](https://github.com/Mike-Aniki/AnikiPackCreator)** — This project
+- **[Aniki ReMake](https://github.com/Mike-Aniki/Aniki-ReMake)** — Fullscreen Playnite theme
+- **[Aniki Helper](https://github.com/Mike-Aniki/AnikiHelper)** — Companion plugin used to install and manage packs
+- **[Aniki Community Packs](https://github.com/Mike-Aniki/AnikiCommunityPacks)** — Browse and share community creations
+- **[Aniki Pack Creator](https://github.com/Mike-Aniki/AnikiPackCreator)** — This project
 
 ---
 
