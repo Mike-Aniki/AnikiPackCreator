@@ -1,4 +1,4 @@
-﻿using AnikiVisualPackCreator.Models;
+using AnikiVisualPackCreator.Models;
 using Loc = AnikiVisualPackCreator.Localization.LocalizationService;
 using System.IO.Compression;
 using System.Text;
@@ -74,6 +74,10 @@ public static class ColorPackExportService
                     creatorVersion,
                     masterColors = new
                     {
+                        badges = palette.Badges,
+                        activeButtons = palette.ActiveButtons,
+                        outgoingMessages = palette.OutgoingMessages,
+                        cinematicOverlay = palette.CinematicOverlay,
                         primaryAccent = palette.PrimaryAccent,
                         secondaryAccent = palette.SecondaryAccent,
                         focus = palette.Focus,
@@ -113,6 +117,20 @@ public static class ColorPackExportService
         var document = XDocument.Parse(xaml, LoadOptions.PreserveWhitespace);
         XNamespace presentation = "http://schemas.microsoft.com/winfx/2006/xaml/presentation";
         XNamespace x = "http://schemas.microsoft.com/winfx/2006/xaml";
+
+        var actualKeys = document.Root!.Elements()
+            .Select(element => (string?)element.Attribute(x + "Key"))
+            .Where(key => !string.IsNullOrWhiteSpace(key))
+            .ToList();
+        var expectedKeys = XDocument.Parse(ColorPackTemplateService.LoadReferenceTemplate()).Root!.Elements()
+            .Select(element => (string?)element.Attribute(x + "Key"))
+            .Where(key => !string.IsNullOrWhiteSpace(key))
+            .ToHashSet(StringComparer.Ordinal);
+        if (actualKeys.Count != actualKeys.Distinct(StringComparer.Ordinal).Count() ||
+            !expectedKeys.Concat(new[] { "BadgeBackgroundBrush", "ActiveButtonBackgroundBrush", "OutgoingMessageBackgroundBrush", "SocialVoiceVolumeBrush", "SocialVoiceBorderBrush" }).ToHashSet(StringComparer.Ordinal).SetEquals(actualKeys))
+        {
+            throw new InvalidDataException(Loc.Get("ServiceColorResourceKeysInvalid"));
+        }
 
         var colors = document.Descendants(presentation + "Color")
             .Where(element => element.Attribute(x + "Key") != null)

@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using System.IO;
 using System.Runtime.CompilerServices;
 using Loc = AnikiVisualPackCreator.Localization.LocalizationService;
@@ -38,7 +38,7 @@ public sealed class VisualPackAssetState : INotifyPropertyChanged
     }
 
     public bool IsReady => !string.IsNullOrWhiteSpace(SourcePath) && File.Exists(SourcePath);
-    public string StatusText => IsReady ? Loc.Get("AssetReady") : Loc.Get("AssetMissing");
+    public string StatusText => IsReady ? Loc.Get("AssetReady") : Loc.Get(Definition.Optional ? "Optional" : "AssetMissing");
     public string SourceFileName => IsReady
         ? Path.GetFileName(SourcePath) ?? Loc.Get("NoSourceImageSelected")
         : Loc.Get("NoSourceImageSelected");

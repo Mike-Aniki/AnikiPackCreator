@@ -1,4 +1,4 @@
-﻿using Loc = AnikiVisualPackCreator.Localization.LocalizationService;
+using Loc = AnikiVisualPackCreator.Localization.LocalizationService;
 
 namespace AnikiVisualPackCreator.Models;
 
@@ -43,10 +43,11 @@ public sealed class SoundPackSoundDefinition
     [
         new("navigation", "audio/navigation.wav", "SoundName_Navigation", "SoundSection_ThemeSounds", "SoundCategory_Interface", SoundPackAudioFormat.Wav),
         new("activation", "audio/activation.wav", "SoundName_Activation", "SoundSection_ThemeSounds", "SoundCategory_Interface", SoundPackAudioFormat.Wav),
+        new("login-confirm", "audio/LoginConfirm.wav", "SoundName_LoginConfirm", "SoundSection_ThemeSounds", "SoundCategory_Interface", SoundPackAudioFormat.Wav),
         new("change-display", "audio/ChangeDisplay.wav", "SoundName_ChangeDisplay", "SoundSection_ThemeSounds", "SoundCategory_Interface", SoundPackAudioFormat.Wav),
         new("enter-game-details", "audio/EnterGameDetails.wav", "SoundName_EnterGameDetails", "SoundSection_ThemeSounds", "SoundCategory_Interface", SoundPackAudioFormat.Wav),
         new("exit-game-details", "audio/ExitGameDetails.wav", "SoundName_ExitGameDetails", "SoundSection_ThemeSounds", "SoundCategory_Interface", SoundPackAudioFormat.Wav),
-        new("home-hub-close", "audio/HomeHubClose.wav", "SoundName_HomeHubClose", "SoundSection_ThemeSounds", "SoundCategory_Interface", SoundPackAudioFormat.Wav),
+        new("change-page", "audio/ChangePage.wav", "SoundName_ChangePage", "SoundSection_ThemeSounds", "SoundCategory_Interface", SoundPackAudioFormat.Wav),
         new("open-additional-view", "audio/OpenAdditionalView.wav", "SoundName_OpenAdditionalView", "SoundSection_ThemeSounds", "SoundCategory_Interface", SoundPackAudioFormat.Wav),
         new("notification", "audio/Noti.wav", "SoundName_Notification", "SoundSection_ThemeSounds", "SoundCategory_Interface", SoundPackAudioFormat.Wav),
         new("session-summary", "audio/SessionSummary.wav", "SoundName_SessionSummary", "SoundSection_ThemeSounds", "SoundCategory_Interface", SoundPackAudioFormat.Wav),

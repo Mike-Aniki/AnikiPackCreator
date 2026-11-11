@@ -320,7 +320,12 @@
                         <Style TargetType="{x:Type ScrollBar}" BasedOn="{StaticResource PackListScrollBar}"/>
                     </ScrollViewer.Resources>
                     <StackPanel>
-                        <TextBlock Text="{DynamicResource ColorPaletteTitle}" Style="{StaticResource SectionTitle}"/>
+                        <TextBlock Text="MODE SIMPLIFIÉ" Style="{StaticResource SectionTitle}"/>
+                        <WrapPanel Margin="0,0,0,10">
+                            <Button Content="Mode expert…" Click="ExpertModeClick" Margin="0,0,6,6"/>
+                            <Button Content="Annuler le dernier réglage" Click="UndoPaletteClick" Margin="0,0,0,6"/>
+                        </WrapPanel>
+                        
                         <TextBlock Text="{DynamicResource ColorPaletteHint}"
                                    Foreground="{StaticResource MutedTextBrush}"
                                    FontSize="11"
@@ -331,35 +336,54 @@
 
                         <Grid Margin="0,0,0,8">
                             <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="8"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                            <TextBlock Text="{DynamicResource ColorPrimaryAccent}" VerticalAlignment="Center" ToolTip="{DynamicResource ColorPrimaryAccentHint}"/>
+                            <TextBlock Text="{DynamicResource ColorPrimaryAccent}" VerticalAlignment="Center" ToolTip="{DynamicResource ColorPreviewImpact_PrimaryAccent}"/>
                             <Button Grid.Column="1" Tag="PrimaryAccent" Style="{StaticResource ColorSwatchButton}" Background="{Binding PrimaryAccentBrush}" Click="ChooseColorClick"/>
                             <TextBox Grid.Column="3" Tag="PrimaryAccent" GotKeyboardFocus="PaletteFieldGotKeyboardFocus" Style="{StaticResource PaletteHexBox}" Text="{Binding PrimaryAccent, UpdateSourceTrigger=PropertyChanged}"/>
                         </Grid>
+                        <Grid Margin="0,0,0,8">
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="8"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                            <TextBlock Text="{DynamicResource ColorBadges}" VerticalAlignment="Center" ToolTip="{DynamicResource ColorPreviewImpact_Badges}"/>
+                            <Button Grid.Column="1" Tag="Badges" Style="{StaticResource ColorSwatchButton}" Background="{Binding BadgesBrush}" Click="ChooseColorClick"/>
+                            <TextBox Grid.Column="3" Tag="Badges" GotKeyboardFocus="PaletteFieldGotKeyboardFocus" Style="{StaticResource PaletteHexBox}" Text="{Binding Badges, UpdateSourceTrigger=PropertyChanged}"/>
+                        </Grid>
+                        <Grid Margin="0,0,0,8">
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="8"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                            <TextBlock Text="{DynamicResource ColorActiveButtons}" VerticalAlignment="Center" ToolTip="{DynamicResource ColorPreviewImpact_ActiveButtons}"/>
+                            <Button Grid.Column="1" Tag="ActiveButtons" Style="{StaticResource ColorSwatchButton}" Background="{Binding ActiveButtonsBrush}" Click="ChooseColorClick"/>
+                            <TextBox Grid.Column="3" Tag="ActiveButtons" GotKeyboardFocus="PaletteFieldGotKeyboardFocus" Style="{StaticResource PaletteHexBox}" Text="{Binding ActiveButtons, UpdateSourceTrigger=PropertyChanged}"/>
+                        </Grid>
+                        <Grid Margin="0,0,0,8">
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="8"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                            <TextBlock Text="{DynamicResource ColorOutgoingMessages}" VerticalAlignment="Center" ToolTip="{DynamicResource ColorPreviewImpact_OutgoingMessages}"/>
+                            <Button Grid.Column="1" Tag="OutgoingMessages" Style="{StaticResource ColorSwatchButton}" Background="{Binding OutgoingMessagesBrush}" Click="ChooseColorClick"/>
+                            <TextBox Grid.Column="3" Tag="OutgoingMessages" GotKeyboardFocus="PaletteFieldGotKeyboardFocus" Style="{StaticResource PaletteHexBox}" Text="{Binding OutgoingMessages, UpdateSourceTrigger=PropertyChanged}"/>
+                        </Grid>
+
 
                         <Grid Margin="0,0,0,8">
                             <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="8"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                            <TextBlock Text="{DynamicResource ColorSecondaryAccent}" VerticalAlignment="Center" ToolTip="{DynamicResource ColorSecondaryAccentHint}"/>
+                            <TextBlock Text="{DynamicResource ColorSecondaryAccent}" VerticalAlignment="Center" ToolTip="{DynamicResource ColorPreviewImpact_SecondaryAccent}"/>
                             <Button Grid.Column="1" Tag="SecondaryAccent" Style="{StaticResource ColorSwatchButton}" Background="{Binding SecondaryAccentBrush}" Click="ChooseColorClick"/>
                             <TextBox Grid.Column="3" Tag="SecondaryAccent" GotKeyboardFocus="PaletteFieldGotKeyboardFocus" Style="{StaticResource PaletteHexBox}" Text="{Binding SecondaryAccent, UpdateSourceTrigger=PropertyChanged}"/>
                         </Grid>
 
                         <Grid Margin="0,0,0,8">
                             <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="8"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                            <TextBlock Text="{DynamicResource ColorFocus}" VerticalAlignment="Center"/>
+                            <TextBlock Text="{DynamicResource ColorFocus}" VerticalAlignment="Center" ToolTip="{DynamicResource ColorPreviewImpact_Focus}"/>
                             <Button Grid.Column="1" Tag="Focus" Style="{StaticResource ColorSwatchButton}" Background="{Binding FocusColorBrush}" Click="ChooseColorClick"/>
                             <TextBox Grid.Column="3" Tag="Focus" GotKeyboardFocus="PaletteFieldGotKeyboardFocus" Style="{StaticResource PaletteHexBox}" Text="{Binding FocusColor, UpdateSourceTrigger=PropertyChanged}"/>
                         </Grid>
 
                         <Grid Margin="0,0,0,8">
                             <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="8"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                            <TextBlock Text="{DynamicResource ColorActionButtons}" VerticalAlignment="Center"/>
+                            <TextBlock Text="{DynamicResource ColorActionButtons}" VerticalAlignment="Center" ToolTip="{DynamicResource ColorPreviewImpact_ActionButtons}"/>
                             <Button Grid.Column="1" Tag="ActionButtons" Style="{StaticResource ColorSwatchButton}" Background="{Binding ActionButtonsColorBrush}" Click="ChooseColorClick"/>
                             <TextBox Grid.Column="3" Tag="ActionButtons" GotKeyboardFocus="PaletteFieldGotKeyboardFocus" Style="{StaticResource PaletteHexBox}" Text="{Binding ActionButtonsColor, UpdateSourceTrigger=PropertyChanged}"/>
                         </Grid>
 
                         <Grid Margin="0,0,0,14">
                             <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="8"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                            <TextBlock Text="{DynamicResource ColorProgress}" VerticalAlignment="Center"/>
+                            <TextBlock Text="{DynamicResource ColorProgress}" VerticalAlignment="Center" ToolTip="{DynamicResource ColorPreviewImpact_Progress}"/>
                             <Button Grid.Column="1" Tag="Progress" Style="{StaticResource ColorSwatchButton}" Background="{Binding ProgressColorBrush}" Click="ChooseColorClick"/>
                             <TextBox Grid.Column="3" Tag="Progress" GotKeyboardFocus="PaletteFieldGotKeyboardFocus" Style="{StaticResource PaletteHexBox}" Text="{Binding ProgressColor, UpdateSourceTrigger=PropertyChanged}"/>
                         </Grid>
@@ -369,49 +393,56 @@
 
                         <Grid Margin="0,0,0,8">
                             <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="8"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                            <TextBlock Text="{DynamicResource ColorBackground}" VerticalAlignment="Center"/>
+                            <TextBlock Text="{DynamicResource ColorBackground}" VerticalAlignment="Center" ToolTip="{DynamicResource ColorPreviewImpact_Background}"/>
                             <Button Grid.Column="1" Tag="Background" Style="{StaticResource ColorSwatchButton}" Background="{Binding BackgroundBrush}" Click="ChooseColorClick"/>
                             <TextBox Grid.Column="3" Tag="Background" GotKeyboardFocus="PaletteFieldGotKeyboardFocus" Style="{StaticResource PaletteHexBox}" Text="{Binding BackgroundColor, UpdateSourceTrigger=PropertyChanged}"/>
                         </Grid>
 
                         <Grid Margin="0,0,0,8">
                             <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="8"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                            <TextBlock Text="{DynamicResource ColorBars}" VerticalAlignment="Center"/>
+                            <TextBlock Text="{DynamicResource ColorBars}" VerticalAlignment="Center" ToolTip="{DynamicResource ColorPreviewImpact_Bars}"/>
                             <Button Grid.Column="1" Tag="Bars" Style="{StaticResource ColorSwatchButton}" Background="{Binding BarsColorBrush}" Click="ChooseColorClick"/>
                             <TextBox Grid.Column="3" Tag="Bars" GotKeyboardFocus="PaletteFieldGotKeyboardFocus" Style="{StaticResource PaletteHexBox}" Text="{Binding BarsColor, UpdateSourceTrigger=PropertyChanged}"/>
                         </Grid>
 
                         <Grid Margin="0,0,0,8">
                             <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="8"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                            <TextBlock Text="{DynamicResource ColorMenus}" VerticalAlignment="Center"/>
+                            <TextBlock Text="{DynamicResource ColorMenus}" VerticalAlignment="Center" ToolTip="{DynamicResource ColorPreviewImpact_Menus}"/>
                             <Button Grid.Column="1" Tag="Menus" Style="{StaticResource ColorSwatchButton}" Background="{Binding MenusColorBrush}" Click="ChooseColorClick"/>
                             <TextBox Grid.Column="3" Tag="Menus" GotKeyboardFocus="PaletteFieldGotKeyboardFocus" Style="{StaticResource PaletteHexBox}" Text="{Binding MenusColor, UpdateSourceTrigger=PropertyChanged}"/>
                         </Grid>
 
                         <Grid Margin="0,0,0,8">
                             <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="8"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                            <TextBlock Text="{DynamicResource ColorMenuHeader}" VerticalAlignment="Center"/>
+                            <TextBlock Text="{DynamicResource ColorMenuHeader}" VerticalAlignment="Center" ToolTip="{DynamicResource ColorPreviewImpact_MenuHeader}"/>
                             <Button Grid.Column="1" Tag="MenuHeader" Style="{StaticResource ColorSwatchButton}" Background="{Binding MenuHeaderColorBrush}" Click="ChooseColorClick"/>
                             <TextBox Grid.Column="3" Tag="MenuHeader" GotKeyboardFocus="PaletteFieldGotKeyboardFocus" Style="{StaticResource PaletteHexBox}" Text="{Binding MenuHeaderColor, UpdateSourceTrigger=PropertyChanged}"/>
                         </Grid>
 
                         <Grid Margin="0,0,0,8">
                             <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="8"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                            <TextBlock Text="{DynamicResource ColorCards}" VerticalAlignment="Center"/>
+                            <TextBlock Text="{DynamicResource ColorCinematicOverlay}" VerticalAlignment="Center" ToolTip="{DynamicResource ColorPreviewImpact_CinematicOverlay}"/>
+                            <Button Grid.Column="1" Tag="CinematicOverlay" Style="{StaticResource ColorSwatchButton}" Background="{Binding CinematicOverlayColorBrush}" Click="ChooseColorClick"/>
+                            <TextBox Grid.Column="3" Tag="CinematicOverlay" GotKeyboardFocus="PaletteFieldGotKeyboardFocus" Style="{StaticResource PaletteHexBox}" Text="{Binding CinematicOverlayColor, UpdateSourceTrigger=PropertyChanged}"/>
+                        </Grid>
+
+                        <Grid Margin="0,0,0,8">
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="8"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                            <TextBlock Text="{DynamicResource ColorCards}" VerticalAlignment="Center" ToolTip="{DynamicResource ColorPreviewImpact_Cards}"/>
                             <Button Grid.Column="1" Tag="Cards" Style="{StaticResource ColorSwatchButton}" Background="{Binding CardsColorBrush}" Click="ChooseColorClick"/>
                             <TextBox Grid.Column="3" Tag="Cards" GotKeyboardFocus="PaletteFieldGotKeyboardFocus" Style="{StaticResource PaletteHexBox}" Text="{Binding CardsColor, UpdateSourceTrigger=PropertyChanged}"/>
                         </Grid>
 
                         <Grid Margin="0,0,0,8">
                             <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="8"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                            <TextBlock Text="{DynamicResource ColorBorder}" VerticalAlignment="Center"/>
+                            <TextBlock Text="{DynamicResource ColorBorder}" VerticalAlignment="Center" ToolTip="{DynamicResource ColorPreviewImpact_Border}"/>
                             <Button Grid.Column="1" Tag="Border" Style="{StaticResource ColorSwatchButton}" Background="{Binding BorderColorBrush}" Click="ChooseColorClick"/>
                             <TextBox Grid.Column="3" Tag="Border" GotKeyboardFocus="PaletteFieldGotKeyboardFocus" Style="{StaticResource PaletteHexBox}" Text="{Binding BorderColor, UpdateSourceTrigger=PropertyChanged}"/>
                         </Grid>
 
                         <Grid Margin="0,0,0,14">
                             <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="8"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                            <TextBlock Text="{DynamicResource ColorNotifications}" VerticalAlignment="Center"/>
+                            <TextBlock Text="{DynamicResource ColorNotifications}" VerticalAlignment="Center" ToolTip="{DynamicResource ColorPreviewImpact_Notifications}"/>
                             <Button Grid.Column="1" Tag="Notifications" Style="{StaticResource ColorSwatchButton}" Background="{Binding NotificationsColorBrush}" Click="ChooseColorClick"/>
                             <TextBox Grid.Column="3" Tag="Notifications" GotKeyboardFocus="PaletteFieldGotKeyboardFocus" Style="{StaticResource PaletteHexBox}" Text="{Binding NotificationsColor, UpdateSourceTrigger=PropertyChanged}"/>
                         </Grid>
@@ -421,21 +452,21 @@
 
                         <Grid Margin="0,0,0,8">
                             <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="8"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                            <TextBlock Text="{DynamicResource ColorPrimaryText}" VerticalAlignment="Center"/>
+                            <TextBlock Text="{DynamicResource ColorPrimaryText}" VerticalAlignment="Center" ToolTip="{DynamicResource ColorPreviewImpact_PrimaryText}"/>
                             <Button Grid.Column="1" Tag="PrimaryText" Style="{StaticResource ColorSwatchButton}" Background="{Binding PrimaryTextBrush}" Click="ChooseColorClick"/>
                             <TextBox Grid.Column="3" Tag="PrimaryText" GotKeyboardFocus="PaletteFieldGotKeyboardFocus" Style="{StaticResource PaletteHexBox}" Text="{Binding PrimaryText, UpdateSourceTrigger=PropertyChanged}"/>
                         </Grid>
 
                         <Grid Margin="0,0,0,8">
                             <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="8"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                            <TextBlock Text="{DynamicResource ColorSecondaryText}" VerticalAlignment="Center"/>
+                            <TextBlock Text="{DynamicResource ColorSecondaryText}" VerticalAlignment="Center" ToolTip="{DynamicResource ColorPreviewImpact_SecondaryText}"/>
                             <Button Grid.Column="1" Tag="SecondaryText" Style="{StaticResource ColorSwatchButton}" Background="{Binding SecondaryTextBrush}" Click="ChooseColorClick"/>
                             <TextBox Grid.Column="3" Tag="SecondaryText" GotKeyboardFocus="PaletteFieldGotKeyboardFocus" Style="{StaticResource PaletteHexBox}" Text="{Binding SecondaryText, UpdateSourceTrigger=PropertyChanged}"/>
                         </Grid>
 
                         <Grid Margin="0,0,0,12">
                             <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="8"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                            <TextBlock Text="{DynamicResource ColorHighlightText}" VerticalAlignment="Center"/>
+                            <TextBlock Text="{DynamicResource ColorHighlightText}" VerticalAlignment="Center" ToolTip="{DynamicResource ColorPreviewImpact_HighlightText}"/>
                             <Button Grid.Column="1" Tag="HighlightText" Style="{StaticResource ColorSwatchButton}" Background="{Binding HighlightTextBrush}" Click="ChooseColorClick"/>
                             <TextBox Grid.Column="3" Tag="HighlightText" GotKeyboardFocus="PaletteFieldGotKeyboardFocus" Style="{StaticResource PaletteHexBox}" Text="{Binding HighlightText, UpdateSourceTrigger=PropertyChanged}"/>
                         </Grid>
@@ -463,7 +494,7 @@
                         <TextBlock Text="{DynamicResource ColorPreviewHint}" Foreground="{StaticResource MutedTextBrush}" FontSize="11" Margin="0,4,0,0" TextWrapping="Wrap"/>
                     </StackPanel>
 
-                    <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,12,0,0">
+                    <WrapPanel Grid.Row="1" Orientation="Horizontal" Margin="0,12,0,0">
                         <RadioButton x:Name="PreviewMainTab"
                                      GroupName="ColorPreviewScene"
                                      IsChecked="True"
@@ -477,11 +508,17 @@
                                      GroupName="ColorPreviewScene"
                                      Content="{DynamicResource ColorPreviewTabMenus}"
                                      Style="{StaticResource PreviewSceneTab}"/>
+                        <RadioButton x:Name="PreviewSocialTab" GroupName="ColorPreviewScene" Content="RACCOURCIS ET SOCIAL" Style="{StaticResource PreviewSceneTab}"/>
                         <RadioButton x:Name="PreviewDetailsTab"
                                      GroupName="ColorPreviewScene"
                                      Content="{Binding DetailsPreviewTabText}"
                                      Style="{StaticResource PreviewSceneTab}"/>
-                    </StackPanel>
+                        <CheckBox x:Name="PreviewCinematicOverlay"
+                                  Content="{DynamicResource ColorPreviewCinematicOverlay}"
+                                  Foreground="{StaticResource TextBrush}"
+                                  VerticalAlignment="Center" Margin="12,0,0,0"
+                                  Visibility="{Binding IsChecked, ElementName=PreviewMenusTab, Converter={StaticResource BoolToVisibility}}"/>
+                    </WrapPanel>
 
                     <Border Grid.Row="2"
                             Background="#FF0E171D"
@@ -512,10 +549,30 @@
                             ClipToBounds="True">
                         <Viewbox Stretch="Uniform">
                             <Grid Width="960" Height="540" Background="#FF080C10">
+<Grid Visibility="{Binding IsChecked, ElementName=PreviewSocialTab, Converter={StaticResource BoolToVisibility}}" Background="{DynamicResource SecondaryViewBackground}">
+<Image Source="/AnikiPackCreator;component/Assets/ColorPackPreviewBackground.jpeg" Stretch="UniformToFill" Opacity="0.25"/>
+<Border Background="{DynamicResource CinematicOverlayTintBrush}" Opacity="0.15"/>
+<Border Height="48" VerticalAlignment="Top" Background="{DynamicResource TopBar}"><TextBlock Text="Bibliothèque     Profil     Médias     Store     Actualités" Foreground="{DynamicResource TextBrush}" FontSize="17" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
+<Border Width="440" Margin="22,70,0,50" HorizontalAlignment="Left" Padding="20" CornerRadius="18" Background="{DynamicResource BackgroundMenu}" BorderBrush="{DynamicResource MenuBorderBrush}" BorderThickness="2">
+<StackPanel>
+<TextBlock Text="Raccourcis de la barre supérieure" Foreground="{DynamicResource TextBrush}" FontSize="23" FontWeight="SemiBold"/>
+<TextBlock Text="Épinglez vos fonctions préférées" Foreground="{DynamicResource TextDetailBrush}" FontSize="14" Margin="0,5,0,15"/>
+<Grid Margin="0,0,0,10"><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="52"/></Grid.ColumnDefinitions><Border Background="{DynamicResource AnikiSettingsFlatRowBackground}" BorderBrush="{DynamicResource AnikiSettingsFlatRowLine}" BorderThickness="2" CornerRadius="12" Height="54" Margin="0,0,10,0"><TextBlock Text="↓  Téléchargements" Foreground="{DynamicResource TextBrush}" FontSize="19" VerticalAlignment="Center" Margin="14,0"/></Border><Border Grid.Column="1" CornerRadius="23" Width="46" Height="46" Background="{DynamicResource ActiveButtonBackgroundBrush}" BorderBrush="{DynamicResource AnikiSettingsFlatRowLine}" BorderThickness="2"><TextBlock Text="✓" Foreground="{DynamicResource TextBrush}" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border></Grid><Grid Margin="0,0,0,10"><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="52"/></Grid.ColumnDefinitions><Border Background="{DynamicResource AnikiSettingsFlatRowBackground}" BorderBrush="{DynamicResource FocusGameBorderBrush}" BorderThickness="2" CornerRadius="12" Height="54" Margin="0,0,10,0"><TextBlock Text="★  Succès" Foreground="{DynamicResource TextBrush}" FontSize="19" VerticalAlignment="Center" Margin="14,0"/></Border><Border Grid.Column="1" CornerRadius="23" Width="46" Height="46" Background="{DynamicResource ActiveButtonBackgroundBrush}" BorderBrush="{DynamicResource AnikiSettingsFlatRowLine}" BorderThickness="2"><TextBlock Text="✓" Foreground="{DynamicResource TextBrush}" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border></Grid><Grid Margin="0,0,0,10"><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="52"/></Grid.ColumnDefinitions><Border Background="{DynamicResource AnikiSettingsFlatRowBackground}" BorderBrush="{DynamicResource AnikiSettingsFlatRowLine}" BorderThickness="2" CornerRadius="12" Height="54" Margin="0,0,10,0"><TextBlock Text="♬  Lecteur musical" Foreground="{DynamicResource TextBrush}" FontSize="19" VerticalAlignment="Center" Margin="14,0"/></Border><Border Grid.Column="1" CornerRadius="23" Width="46" Height="46" Background="{DynamicResource ActiveButtonBackgroundBrush}" BorderBrush="{DynamicResource AnikiSettingsFlatRowLine}" BorderThickness="2"><TextBlock Text="✓" Foreground="{DynamicResource TextBrush}" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border></Grid><Grid Margin="0,0,0,10"><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="52"/></Grid.ColumnDefinitions><Border Background="{DynamicResource AnikiSettingsFlatRowBackground}" BorderBrush="{DynamicResource AnikiSettingsFlatRowLine}" BorderThickness="2" CornerRadius="12" Height="54" Margin="0,0,10,0"><TextBlock Text="▣  Galerie de captures" Foreground="{DynamicResource TextBrush}" FontSize="19" VerticalAlignment="Center" Margin="14,0"/></Border><Border Grid.Column="1" CornerRadius="23" Width="46" Height="46" Background="{DynamicResource BackgroundMenu}" BorderBrush="{DynamicResource AnikiSettingsFlatRowLine}" BorderThickness="2"><TextBlock Text="+" Foreground="{DynamicResource TextBrush}" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border></Grid>
+</StackPanel></Border>
+<Border Width="440" Margin="0,70,22,50" HorizontalAlignment="Right" Padding="20" CornerRadius="18" Background="{DynamicResource BackgroundMenu}" BorderBrush="{DynamicResource MenuBorderBrush}" BorderThickness="2">
+<StackPanel>
+<DockPanel><Border DockPanel.Dock="Right" Background="{DynamicResource BadgeBackgroundBrush}" CornerRadius="14" Padding="9,3"><TextBlock Text="3" Foreground="{DynamicResource TextBrush}" FontSize="16"/></Border><TextBlock Text="Messages · Alex" Foreground="{DynamicResource TextBrush}" FontSize="23" FontWeight="SemiBold"/></DockPanel>
+<Border Background="{DynamicResource AnikiSettingsChoiceBackground}" CornerRadius="15" Padding="15" Margin="0,24,42,0"><TextBlock Text="On se retrouve en jeu ce soir ?" Foreground="{DynamicResource TextBrush}" FontSize="17" TextWrapping="Wrap"/></Border>
+<Grid Margin="42,16,0,0"><Border Background="{DynamicResource OutgoingMessageBackgroundBrush}" Opacity="0.55" CornerRadius="15"/><TextBlock Text="Oui, je lance le jeu !" Foreground="{DynamicResource TextBrush}" FontSize="17" Margin="15"/></Grid>
+<TextBlock Text="Alex écrit…" Foreground="{DynamicResource AccentBrush}" FontSize="14" Margin="0,20,0,22"/>
+<TextBlock Text="Volume de la conversation" Foreground="{DynamicResource TextDetailBrush}" FontSize="14"/>
+<Grid Height="7" Margin="0,10,0,0"><Border Background="{DynamicResource AnikiSettingsFlatRowLine}" CornerRadius="3"/><Border Width="240" HorizontalAlignment="Left" Background="{DynamicResource SocialVoiceVolumeBrush}" CornerRadius="3"/></Grid>
+</StackPanel></Border>
+<Border Height="35" VerticalAlignment="Bottom" Background="{DynamicResource BottomBar}"><TextBlock Text="Ⓐ Sélectionner       Ⓑ Retour" Foreground="{DynamicResource TextBrush}" FontSize="14" Margin="24,0" VerticalAlignment="Center"/></Border>
+</Grid>
 <Grid Visibility="{Binding IsChecked, ElementName=PreviewMainTab, Converter={StaticResource BoolToVisibility}}" ClipToBounds="True">
                                     <Image Source="/AnikiPackCreator;component/Assets/ColorPackPreviewBackground.jpeg" Stretch="UniformToFill"/>
                                     <Border Background="{DynamicResource ShadeBackground}"/>
-                                    <Border Background="{DynamicResource ShadeLeft}"/>
                                     <Border Height="228" VerticalAlignment="Bottom" Background="{DynamicResource ShadeBottom}"/>
 
                                     <Grid>
@@ -533,17 +590,17 @@
                                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                                     <Ellipse Width="34" Height="34" Fill="{DynamicResource BackgroundItem}" Stroke="{DynamicResource FocusGameBorderBrush}" StrokeThickness="1.4"/>
                                                     <StackPanel Margin="9,0,0,0" VerticalAlignment="Center">
-                                                        <TextBlock Text="Player" Foreground="{DynamicResource TextBrush}" FontSize="14" FontWeight="Bold"/>
+                                                        <TextBlock Text="Joueur" Foreground="{DynamicResource TextBrush}" FontSize="14" FontWeight="Bold"/>
                                                         <TextBlock Text="● Online" Foreground="#FF42D27A" FontSize="8"/>
                                                     </StackPanel>
                                                 </StackPanel>
                                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                                    <TextBlock Text="Hub" Foreground="{DynamicResource TextBrush}" FontWeight="SemiBold" Margin="14,0"/>
-                                                    <TextBlock Text="Horizontal" Foreground="{DynamicResource TextBrush}" FontWeight="SemiBold" Margin="14,0"/>
-                                                    <TextBlock Text="Filter" Foreground="{DynamicResource TextBrush}" FontWeight="SemiBold" Margin="14,0"/>
-                                                    <TextBlock Text="Search" Foreground="{DynamicResource TextBrush}" FontWeight="SemiBold" Margin="14,0"/>
-                                                    <TextBlock Text="Tools" Foreground="{DynamicResource TextBrush}" FontWeight="SemiBold" Margin="14,0"/>
-                                                    <TextBlock Text="Extensions" Foreground="{DynamicResource TextBrush}" FontWeight="SemiBold" Margin="14,0"/>
+                                                    <TextBlock Text="Bibliothèque" Foreground="{DynamicResource TextBrush}" FontWeight="SemiBold" Margin="14,0"/>
+                                                    <TextBlock Text="Profil" Foreground="{DynamicResource TextBrush}" FontWeight="SemiBold" Margin="14,0"/>
+                                                    <TextBlock Text="Médias" Foreground="{DynamicResource TextBrush}" FontWeight="SemiBold" Margin="14,0"/>
+                                                    <TextBlock Text="Store" Foreground="{DynamicResource TextBrush}" FontWeight="SemiBold" Margin="14,0"/>
+                                                    <TextBlock Text="Actualités" Foreground="{DynamicResource TextBrush}" FontWeight="SemiBold" Margin="14,0"/>
+                                                    <TextBlock Text="Web" Foreground="{DynamicResource TextBrush}" FontWeight="SemiBold" Margin="14,0"/>
                                                 </StackPanel>
                                             </Grid>
                                         </Grid>
@@ -552,7 +609,7 @@
                                             <StackPanel Margin="70,96,0,0" VerticalAlignment="Top" HorizontalAlignment="Left">
                                                 <TextBlock Text="Yakuza 0" Foreground="{DynamicResource TextBrush}" FontSize="54" FontWeight="Bold"/>
                                                 <Border Background="{DynamicResource TextHighlightBrush}" CornerRadius="4" Padding="12,4" HorizontalAlignment="Left" Margin="0,8,0,0">
-                                                    <TextBlock Text="DIRECTOR'S CUT" Foreground="{DynamicResource TextColorDarkBrush}" FontSize="14" FontWeight="Bold"/>
+                                                    <TextBlock Text="DIRECTOR'S CUT" Foreground="{DynamicResource PreviewDarkTextBrush}" FontSize="14" FontWeight="Bold"/>
                                                 </Border>
                                                 <StackPanel Orientation="Horizontal" Margin="0,16,0,0">
                                                     <Border Background="{DynamicResource ButtonPlayColor}" BorderBrush="{DynamicResource FocusGameBorderBrush}" BorderThickness="1.2" CornerRadius="8" Padding="18,7" Margin="0,0,9,0">
@@ -570,7 +627,7 @@
 
                                             <StackPanel Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,28,20">
                                                 <Border Background="{Binding SecondaryAccentBrush}" BorderBrush="{DynamicResource FocusGameBorderBrush}" BorderThickness="1.2" CornerRadius="12" Padding="12,7" Margin="0,0,0,10">
-                                                    <TextBlock Text="♡ Favorite" Foreground="{DynamicResource TextColorDarkBrush}" FontWeight="SemiBold"/>
+                                                    <TextBlock Text="♡ Favorite" Foreground="{DynamicResource PreviewDarkTextBrush}" FontWeight="SemiBold"/>
                                                 </Border>
                                                 <Border Background="{DynamicResource ButtonBackgroundNoFocus}" BorderBrush="{DynamicResource MenuBorderBrush}" BorderThickness="1" CornerRadius="12" Padding="12,7">
                                                     <StackPanel Orientation="Horizontal">
@@ -647,7 +704,7 @@
                                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                                     <Ellipse Width="34" Height="34" Fill="{DynamicResource BackgroundItem}" Stroke="{DynamicResource MenuBorderBrush}" StrokeThickness="1.2"/>
                                                     <StackPanel Margin="9,0,0,0" VerticalAlignment="Center">
-                                                        <TextBlock Text="Player" Foreground="{DynamicResource TextBrush}" FontSize="14" FontWeight="Bold"/>
+                                                        <TextBlock Text="Joueur" Foreground="{DynamicResource TextBrush}" FontSize="14" FontWeight="Bold"/>
                                                         <TextBlock Text="RPG fan" Foreground="{DynamicResource TextAltBrush}" FontSize="8"/>
                                                     </StackPanel>
                                                 </StackPanel>
@@ -684,7 +741,7 @@
                                                             <TextBlock Text="★" Foreground="{Binding PrimaryAccentBrush}" FontSize="38" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                                         </Border>
                                                         <StackPanel Margin="16,0,0,0" VerticalAlignment="Center">
-                                                            <TextBlock Text="Player" Foreground="{DynamicResource TextHubBrush}" FontSize="24" FontWeight="Bold"/>
+                                                            <TextBlock Text="Joueur" Foreground="{DynamicResource TextHubBrush}" FontSize="24" FontWeight="Bold"/>
                                                             <TextBlock Text="RPG fan" Foreground="{DynamicResource TextHubNameAchievementBrush}" FontSize="15" FontWeight="SemiBold" Margin="0,2,0,0"/>
                                                             <TextBlock Text="Level : 102" Foreground="{DynamicResource TextHubGameAchievementBrush}" FontSize="11" Margin="0,7,0,0"/>
                                                             <TextBlock Text="Total play time : 463d 4h" Foreground="{DynamicResource TextHubDateAchievementBrush}" FontSize="10" Margin="0,3,0,0"/>
@@ -718,7 +775,7 @@
                                                                 <Border Background="{DynamicResource HubAchievementsBackgroundBrush}"/>
                                                                 <Border Height="5" VerticalAlignment="Top" Background="{Binding PrimaryAccentBrush}"/>
                                                                 <Border HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12" Background="{Binding PrimaryAccentBrush}" CornerRadius="5" Padding="8,3">
-                                                                    <TextBlock Text="NEWS" Foreground="{DynamicResource TextColorDarkBrush}" FontSize="8" FontWeight="Bold"/>
+                                                                    <TextBlock Text="NEWS" Foreground="{DynamicResource PreviewDarkTextBrush}" FontSize="8" FontWeight="Bold"/>
                                                                 </Border>
                                                                 <StackPanel Margin="16" VerticalAlignment="Bottom">
                                                                     <TextBlock Text="New content available" Foreground="{DynamicResource TextBrush}" FontSize="15" FontWeight="Bold"/>
@@ -741,7 +798,7 @@
                                                                 <Border Background="{DynamicResource HubAchievementsBackgroundBrush}"/>
                                                                 <Border Height="5" VerticalAlignment="Top" Background="{Binding SecondaryAccentBrush}"/>
                                                                 <Border HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12" Background="{Binding SecondaryAccentBrush}" CornerRadius="5" Padding="8,3">
-                                                                    <TextBlock Text="UPDATE" Foreground="{DynamicResource TextColorDarkBrush}" FontSize="8" FontWeight="Bold"/>
+                                                                    <TextBlock Text="UPDATE" Foreground="{DynamicResource PreviewDarkTextBrush}" FontSize="8" FontWeight="Bold"/>
                                                                 </Border>
                                                                 <StackPanel Margin="16" VerticalAlignment="Bottom">
                                                                     <TextBlock Text="Theme and community news" Foreground="{DynamicResource TextHighlightNewsViewBrush}" FontSize="15" FontWeight="Bold"/>
@@ -764,65 +821,118 @@
                                         </Grid>
                                     </Grid>
                                 </Grid>
-<Grid Visibility="{Binding IsChecked, ElementName=PreviewMenusTab, Converter={StaticResource BoolToVisibility}}" ClipToBounds="True">
-                                    <Image Source="/AnikiPackCreator;component/Assets/ColorPackPreviewBackground.jpeg" Stretch="UniformToFill"/>
-                                    <Border Background="{DynamicResource ShadeBackgroundDetails}"/>
-                                    <Border Background="#A5000000"/>
+                                <Grid Visibility="{Binding IsChecked, ElementName=PreviewMenusTab, Converter={StaticResource BoolToVisibility}}"
+                                      Background="{DynamicResource SecondaryViewBackground}" ClipToBounds="True">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="62"/>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="48"/>
+                                    </Grid.RowDefinitions>
 
-                                    <Grid Height="58" VerticalAlignment="Top" Opacity="0.40">
-                                        <Border Background="{DynamicResource TopBar}"/>
-                                        <Border Background="{DynamicResource GlassMainBrush}" Opacity="0.65"/>
-                                        <Border Height="1.5" VerticalAlignment="Bottom" Background="{DynamicResource SeparatorTopBarBrush}"/>
-                                        <Grid Margin="18,0">
-                                            <TextBlock Text="Player" Foreground="{DynamicResource TextBrush}" FontWeight="Bold" VerticalAlignment="Center"/>
-                                            <TextBlock Text="Hub      Horizontal      Filter      Search      Tools      Extensions" Foreground="{DynamicResource TextAltBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                            <TextBlock Text="12:39" Foreground="{DynamicResource TextBrush}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                                    <Border Background="{DynamicResource TopBar}"
+                                            BorderBrush="{DynamicResource SeparatorTopBarBrush}" BorderThickness="0,0,0,1">
+                                        <Grid Margin="28,0">
+                                            <TextBlock Text="Aniki ReMake" FontSize="19" FontWeight="SemiBold"
+                                                       Foreground="{DynamicResource TextBrush}" VerticalAlignment="Center"/>
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                <TextBlock Text="{DynamicResource ColorPreviewLibrary}" FontSize="17" FontWeight="SemiBold"
+                                                           Foreground="{DynamicResource TextHighlightBrush}" Margin="0,0,30,0"/>
+                                                <TextBlock Text="{DynamicResource ColorPreviewSettings}" FontSize="17"
+                                                           Foreground="{DynamicResource TextAltBrush}"/>
+                                            </StackPanel>
                                         </Grid>
-                                    </Grid>
+                                    </Border>
 
-                                    <Border Width="325" HorizontalAlignment="Left" Margin="22,12,0,12" Background="{DynamicResource BackgroundMenu}" BorderBrush="{DynamicResource MenuBorderBrush}" BorderThickness="1.3" CornerRadius="8" ClipToBounds="True">
-                                        <Grid>
-                                            <Grid.RowDefinitions><RowDefinition Height="74"/><RowDefinition Height="*"/><RowDefinition Height="44"/></Grid.RowDefinitions>
+                                    <Grid Grid.Row="1">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="24"/>
+                                            <ColumnDefinition Width="444"/>
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Margin="28,24,0,24">
+                                            <TextBlock Text="{DynamicResource ColorPreviewLibrary}" FontSize="31" FontWeight="SemiBold"
+                                                       Foreground="{DynamicResource TextBrush}"/>
+                                            <Border Height="280" Margin="0,18,0,0" CornerRadius="15"
+                                                    BorderBrush="{DynamicResource AnikiSettingsFlatRowLine}" BorderThickness="2">
+                                                <Border.Background>
+                                                    <ImageBrush ImageSource="/AnikiPackCreator;component/Assets/ColorPackPreviewBackground.jpeg"
+                                                                Stretch="UniformToFill"/>
+                                                </Border.Background>
+                                                <Border VerticalAlignment="Bottom" CornerRadius="0,0,13,13"
+                                                        Background="{DynamicResource BackgroundMenu}" Padding="18,13">
+                                                    <StackPanel>
+                                                        <TextBlock Text="{DynamicResource ColorPreviewLastPlayed}" FontSize="14"
+                                                                   Foreground="{DynamicResource TextAltBrush}"/>
+                                                        <TextBlock Text="Like a Dragon: Pirate Yakuza in Hawaii" FontSize="21" FontWeight="SemiBold"
+                                                                   Foreground="{DynamicResource TextBrush}" TextTrimming="CharacterEllipsis"/>
+                                                    </StackPanel>
+                                                </Border>
+                                            </Border>
+                                        </StackPanel>
 
-                                            <Grid Grid.Row="0" Margin="16,0">
-                                                <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
-                                                <Ellipse Width="40" Height="40" Fill="{DynamicResource ButtonBackgroundNoFocus}" Stroke="{DynamicResource MenuBorderBrush}" StrokeThickness="1" VerticalAlignment="Center"/>
-                                                <StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center">
-                                                    <TextBlock Text="Player" Foreground="{DynamicResource TextBrush}" FontSize="21" FontWeight="Bold"/>
+                                        <Grid Grid.ColumnSpan="3" IsHitTestVisible="False"
+                                              Visibility="{Binding IsChecked, ElementName=PreviewCinematicOverlay, Converter={StaticResource BoolToVisibility}}">
+                                            <Rectangle Fill="#66000000"/>
+                                            <Rectangle Fill="{DynamicResource CinematicOverlayTintBrush}" Opacity="0.15"/>
+                                        </Grid>
+
+                                        <Border Grid.Column="2" Margin="0,24,28,24" CornerRadius="15" Background="{DynamicResource BackgroundMenu}"
+                                                BorderBrush="{DynamicResource MenuBorderBrush}" BorderThickness="2">
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="74"/>
+                                                    <RowDefinition Height="*"/>
+                                                </Grid.RowDefinitions>
+                                                <Border CornerRadius="13,13,0,0" Background="{DynamicResource HeaderMenu}" Padding="20,0">
+                                                    <TextBlock Text="{DynamicResource ColorPreviewShortcuts}" FontSize="25" FontWeight="SemiBold"
+                                                               Foreground="{DynamicResource TextBrush}" VerticalAlignment="Center"/>
+                                                </Border>
+                                                <StackPanel Grid.Row="1" Margin="16,16,16,0">
+                                                    <Border Height="74" CornerRadius="15" Background="{DynamicResource AnikiSettingsFlatRowFocus}"
+                                                            BorderBrush="{DynamicResource FocusGameBorderBrush}" BorderThickness="2" Padding="14,0" Margin="0,0,0,10">
+                                                        <StackPanel VerticalAlignment="Center">
+                                                            <TextBlock Text="{DynamicResource ColorPreviewSocial}" FontSize="19" FontWeight="SemiBold"
+                                                                       Foreground="{DynamicResource TextBrush}"/>
+                                                            <TextBlock Text="{DynamicResource ColorPreviewSocialDetail}" FontSize="14"
+                                                                       Foreground="{DynamicResource TextAltBrush}"/>
+                                                        </StackPanel>
+                                                    </Border>
+                                                    <Border Height="74" CornerRadius="15" Background="{DynamicResource AnikiSettingsFlatRowBackground}"
+                                                            BorderBrush="{DynamicResource AnikiSettingsFlatRowLine}" BorderThickness="2" Padding="14,0" Margin="0,0,0,10">
+                                                        <StackPanel VerticalAlignment="Center">
+                                                            <TextBlock Text="{DynamicResource ColorPreviewNotifications}" FontSize="19" FontWeight="SemiBold"
+                                                                       Foreground="{DynamicResource TextBrush}"/>
+                                                            <TextBlock Text="{DynamicResource ColorPreviewNotificationsDetail}" FontSize="14"
+                                                                       Foreground="{DynamicResource TextAltBrush}"/>
+                                                        </StackPanel>
+                                                    </Border>
+                                                    <Border Height="74" CornerRadius="15" Background="{DynamicResource AnikiSettingsFlatRowBackground}"
+                                                            BorderBrush="{DynamicResource AnikiSettingsFlatRowLine}" BorderThickness="2" Padding="14,0">
+                                                        <StackPanel VerticalAlignment="Center">
+                                                            <TextBlock Text="{DynamicResource ColorPreviewAchievements}" FontSize="19" FontWeight="SemiBold"
+                                                                       Foreground="{DynamicResource TextBrush}"/>
+                                                            <TextBlock Text="{DynamicResource ColorPreviewAchievementsDetail}" FontSize="14"
+                                                                       Foreground="{DynamicResource TextAltBrush}"/>
+                                                        </StackPanel>
+                                                    </Border>
                                                 </StackPanel>
                                             </Grid>
+                                        </Border>
+                                    </Grid>
 
-                                            <StackPanel Grid.Row="1" Margin="12,12">
-                                                <Border Background="{DynamicResource ButtonBackgroundFocus}" BorderBrush="{DynamicResource FocusGameBorderBrush}" BorderThickness="1.8" CornerRadius="5" Padding="12,11">
-                                                    <TextBlock Text="◎     Profile" Foreground="{DynamicResource TextBrush}" FontWeight="SemiBold"/>
-                                                </Border>
-                                                <TextBlock Text="◌     Notifications" Foreground="{DynamicResource TextBrush}" Margin="13,16,0,0"/>
-                                                <TextBlock Text="◍     Friends" Foreground="{DynamicResource TextBrush}" Margin="13,16,0,0"/>
-                                                <TextBlock Text="★     Achievements" Foreground="{DynamicResource TextBrush}" Margin="13,16,0,0"/>
-                                                <TextBlock Text="☰     News" Foreground="{DynamicResource TextBrush}" Margin="13,16,0,0"/>
-                                                <TextBlock Text="◧     Steam Store" Foreground="{DynamicResource TextBrush}" Margin="13,16,0,0"/>
-                                                <TextBlock Text="▦     Extras" Foreground="{DynamicResource TextBrush}" Margin="13,16,0,0"/>
-                                                <Border Height="1" Background="{DynamicResource SeparatorBrush}" Margin="8,16,8,0"/>
-                                                <TextBlock Text="◒     Lock Screen" Foreground="{DynamicResource TextAltBrush}" Margin="13,14,0,0"/>
-                                                <TextBlock Text="?     Help and Support" Foreground="{DynamicResource TextAltBrush}" Margin="13,14,0,0"/>
-                                                <TextBlock Text="⚙     Settings" Foreground="{DynamicResource TextAltBrush}" Margin="13,14,0,0"/>
-                                                <TextBlock Text="⏻     Power" Foreground="{DynamicResource TextAltBrush}" Margin="13,14,0,0"/>
-                                            </StackPanel>
-
-                                            <Grid Grid.Row="2">
-                                                <Border BorderBrush="{DynamicResource SeparatorBrush}" BorderThickness="0,1,0,0"/>
-                                                <Grid Margin="14,0">
-                                                    <TextBlock Text="Menu" Foreground="{DynamicResource TextAltBrush}" VerticalAlignment="Center"/>
-                                                    <TextBlock Text="B   Back" Foreground="{DynamicResource TextBrush}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                                                </Grid>
-                                            </Grid>
-                                        </Grid>
+                                    <Border Grid.Row="2" Background="{DynamicResource BottomBar}"
+                                            BorderBrush="{DynamicResource SeparatorBottomBarBrush}" BorderThickness="0,1,0,0">
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,28,0">
+                                            <TextBlock Text="A" Foreground="{DynamicResource TextHighlightBrush}" FontSize="15" FontWeight="Bold" Margin="0,0,8,0"/>
+                                            <TextBlock Text="{DynamicResource ColorPreviewSelect}" Foreground="{DynamicResource TextBrush}" FontSize="15" Margin="0,0,24,0"/>
+                                            <TextBlock Text="B" Foreground="{DynamicResource TextHighlightBrush}" FontSize="15" FontWeight="Bold" Margin="0,0,8,0"/>
+                                            <TextBlock Text="{DynamicResource ColorPreviewBack}" Foreground="{DynamicResource TextBrush}" FontSize="15"/>
+                                        </StackPanel>
                                     </Border>
                                 </Grid>
 <Grid Visibility="{Binding IsChecked, ElementName=PreviewDetailsTab, Converter={StaticResource BoolToVisibility}}" ClipToBounds="True">
                                     <Image Source="/AnikiPackCreator;component/Assets/ColorPackPreviewBackground.jpeg" Stretch="UniformToFill"/>
                                     <Border Background="{DynamicResource ShadeBackground}"/>
-                                    <Border Background="{DynamicResource ShadeLeft}"/>
                                     <Border Background="{DynamicResource ShadeBottom}" Height="205" VerticalAlignment="Bottom"/>
 
                                     <Grid>
@@ -841,7 +951,7 @@
                                             <StackPanel Margin="70,82,0,0" VerticalAlignment="Top" HorizontalAlignment="Left">
                                                 <TextBlock Text="Yakuza 0" Foreground="{DynamicResource TextBrush}" FontSize="54" FontWeight="Bold"/>
                                                 <Border Background="{DynamicResource TextHighlightBrush}" CornerRadius="4" Padding="12,4" HorizontalAlignment="Left" Margin="0,8,0,0">
-                                                    <TextBlock Text="DIRECTOR'S CUT" Foreground="{DynamicResource TextColorDarkBrush}" FontSize="14" FontWeight="Bold"/>
+                                                    <TextBlock Text="DIRECTOR'S CUT" Foreground="{DynamicResource PreviewDarkTextBrush}" FontSize="14" FontWeight="Bold"/>
                                                 </Border>
                                             </StackPanel>
 <Border Width="470" Height="212" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="24,0,0,28"
@@ -865,7 +975,7 @@
                                                         </Grid.RowDefinitions>
 
                                                         <Border Background="{Binding SecondaryAccentBrush}" CornerRadius="4" Padding="6,2" HorizontalAlignment="Left">
-                                                            <TextBlock Text="Ryu Ga Gotoku Studio · 2025" Foreground="{DynamicResource TextColorDarkBrush}" FontSize="9" FontWeight="SemiBold"/>
+                                                            <TextBlock Text="Ryu Ga Gotoku Studio · 2025" Foreground="{DynamicResource PreviewDarkTextBrush}" FontSize="9" FontWeight="SemiBold"/>
                                                         </Border>
 
                                                         <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,7,0,0">
@@ -897,8 +1007,8 @@
                                                         </Border>
 
                                                         <StackPanel Grid.Row="4" Orientation="Horizontal" Margin="0,9,0,0">
-                                                            <Border Background="{DynamicResource HubButtonBackgroundNoFocusBrush}" CornerRadius="7" Padding="9,4" Margin="0,0,7,0"><TextBlock Text="Action / Adventure" Foreground="{DynamicResource TextHubBannerCardBottomBrush}"/></Border>
-                                                            <Border Background="{DynamicResource HubButtonBackgroundNoFocusBrush}" CornerRadius="7" Padding="9,4"><TextBlock Text="Single Player" Foreground="{DynamicResource TextHubBannerCardBottomBrush}"/></Border>
+                                                            <Border Background="{DynamicResource AnikiSettingsChoiceBackground}" CornerRadius="7" Padding="9,4" Margin="0,0,7,0"><TextBlock Text="Action / Adventure" Foreground="{DynamicResource TextHubBannerCardBottomBrush}"/></Border>
+                                                            <Border Background="{DynamicResource AnikiSettingsChoiceBackground}" CornerRadius="7" Padding="9,4"><TextBlock Text="Single Player" Foreground="{DynamicResource TextHubBannerCardBottomBrush}"/></Border>
                                                         </StackPanel>
                                                     </Grid>
                                                 </Grid>
@@ -928,7 +1038,10 @@
                     </Border>
 
                     <Border Grid.Row="4" Background="#FF111B22" BorderBrush="#FF2E3B45" BorderThickness="1" CornerRadius="6" Padding="12">
-                        <TextBlock Text="{DynamicResource ColorTemplateSafetyNote}" Foreground="{StaticResource MutedTextBrush}" TextWrapping="Wrap"/>
+                        <StackPanel>
+                            <TextBlock Text="{DynamicResource ColorTemplateSafetyNote}" Foreground="{StaticResource MutedTextBrush}" TextWrapping="Wrap"/>
+                            <TextBlock Text="{Binding ContrastWarning}" Foreground="#FFFFCB80" TextWrapping="Wrap" Margin="0,6,0,0"/>
+                        </StackPanel>
                     </Border>
                 </Grid>
             </Border>

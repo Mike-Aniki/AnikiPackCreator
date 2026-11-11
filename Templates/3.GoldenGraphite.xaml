@@ -1,7 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
-    <!-- ========================================================== 2) COLOR BANK - Graphite Gold ========================================================== -->
+    <!-- ===== 2) COLOR BANK - Graphite Gold ===== -->
 
     <!-- Old Resource -->
     <Color x:Key="BorderBrushAH">#33E2C15A</Color>
@@ -14,9 +15,10 @@
     <Color x:Key="GlyphColor">#FFE2C15A</Color>
     <Color x:Key="GlowFocusColor">#FFFFCC66</Color>
     <Color x:Key="SelectionLightColor">#FFFFF0C8</Color>
-    <Color x:Key="FocusPrimaryColor">#FFFFF0C8</Color>
-    <Color x:Key="FocusSecondaryColor">#FFE2C15A</Color>
+    
+    
     <Color x:Key="ControlBackgroundColor">#FF1A1D22</Color>
+    <Color x:Key="CinematicOverlayTintColor">#FF1A1D22</Color>
     <Color x:Key="BackgroundItemEndPoint">#50000000</Color>
 
     <!-- Utility -->
@@ -48,7 +50,7 @@
     <Color x:Key="TextAltDetail">#FFFFFFFF</Color>
     <Color x:Key="TextColorDark">#FF13161A</Color>
     <Color x:Key="TextHighlight">#FFFFF0C8</Color>
-    <Color x:Key="Hltb">#FFF5F7FA</Color>
+    
     <Color x:Key="HltbAlt">#FFDDBB55</Color>
 
     <!-- Text for Icon Controller (Changer Dark pour les themes clair sinon idem a Light) -->
@@ -262,10 +264,10 @@
     <Color x:Key="ShadeLeft_Stop2">#441A1D22</Color>
     <Color x:Key="ShadeLeft_Stop3">#00000000</Color>
 
-    <!-- ========================================================== 3) BRUSHES ========================================================== -->
+    <!-- ===== 3) BRUSHES ===== -->
 
-    <!-- PlayniteAchievements toast -->
-    <SolidColorBrush x:Key="AnikiToastBackgroundBrush" Color="{DynamicResource NotificationBackground}" />
+    <!-- Achievements toast -->
+    
     <SolidColorBrush x:Key="AnikiToastTextBrush" Color="{DynamicResource TextColor}" />
     <SolidColorBrush x:Key="AnikiToastSubTextBrush" Color="{DynamicResource SuccessMainTextColorBadge}" />
     <SolidColorBrush x:Key="AnikiToastChipBackgroundBrush" Color="{DynamicResource BadgeTrophée}" />
@@ -286,10 +288,11 @@
     </LinearGradientBrush>
 
 <!-- == UTILITY == -->
-    <SolidColorBrush x:Key="AvatarBorderBrush" Color="{DynamicResource AvatarBorder}" />
-    <SolidColorBrush x:Key="GlowFocusBrush" Color="{DynamicResource GlowFocusColor}" />
-    <SolidColorBrush x:Key="HltbAltBrush" Color="{DynamicResource HltbAlt}" />
+    
+    
+    
     <SolidColorBrush x:Key="ControlBackgroundBrush" Color="{DynamicResource ControlBackgroundColor}" />
+    <SolidColorBrush x:Key="CinematicOverlayTintBrush" Color="{DynamicResource CinematicOverlayTintColor}" />
     <SolidColorBrush x:Key="ComboBoxBorderBrush" Color="{DynamicResource TextSecondaryColor}" />
     <SolidColorBrush x:Key="NotificationBackgroundBrush" Color="{DynamicResource NotificationBackground}" />
     <SolidColorBrush x:Key="PageDotsBackgroundBrush" Color="{DynamicResource PageDotsBackground}" />
@@ -300,7 +303,7 @@
     <SolidColorBrush x:Key="TextAltBrush" Color="{DynamicResource TextSecondaryColor}" />
     <SolidColorBrush x:Key="TextDetailBrush" Color="{DynamicResource TextDetail}" />
     <SolidColorBrush x:Key="TextDetailAltBrush" Color="{DynamicResource TextAltDetail}" />
-    <SolidColorBrush x:Key="TextColorDarkBrush" Color="{DynamicResource TextColorDark}" />
+    
     <SolidColorBrush x:Key="TextHighlightBrush" Color="{DynamicResource TextHighlight}" />
 
     <!-- == CONTROLLER == -->
@@ -316,7 +319,7 @@
 
     <!-- == PROGRESS == -->
     <SolidColorBrush x:Key="ProgressLightBrush" Color="{DynamicResource ProgressLight}" />
-    <SolidColorBrush x:Key="ProgressDarkBrush" Color="{DynamicResource ProgressDark}" />
+    
     <SolidColorBrush x:Key="ProgressBackgroundBrush" Color="{DynamicResource ProgressBackground}" />
 
     <!-- == LIST VIEW == -->
@@ -327,7 +330,7 @@
     <SolidColorBrush x:Key="HubCardBorderBrush" Color="{DynamicResource HubCardBorder}" />
     <SolidColorBrush x:Key="HubCardBottomBackgroundBrush" Color="{DynamicResource HubCardBottomBackground}" />
     <SolidColorBrush x:Key="HubCardBottomBorderBrush" Color="{DynamicResource HubCardBottomBorder}" />
-    <SolidColorBrush x:Key="HubButtonBackgroundNoFocusBrush" Color="{DynamicResource HubButtonBackgroundNoFocus}" />
+    
 
     <SolidColorBrush x:Key="HubBannerBackgroundBrush" Color="{DynamicResource HubBannerBackground}" />
     <SolidColorBrush x:Key="HubBannerBorderBrush" Color="{DynamicResource HubBannerBorder}" />
@@ -350,9 +353,9 @@
 
     <!-- == FRIENDS VIEW == -->
     <SolidColorBrush x:Key="FriendsBannerBackgroundBrush" Color="{DynamicResource FriendsBannerBackground}" />
-    <SolidColorBrush x:Key="FriendsCardBackgroundBrush" Color="{DynamicResource FriendsCardBackground}" />
-    <SolidColorBrush x:Key="FriendsCardBorderBrush" Color="{DynamicResource FriendsCardBorder}" />
-    <SolidColorBrush x:Key="FriendsCardBackgroundOfflineBrush" Color="{DynamicResource FriendsCardBackgroundOffline}" />
+    
+    
+    
     <SolidColorBrush x:Key="FriendsCardBorderOfflineBrush" Color="{DynamicResource FriendsCardBorderOffline}" />
     <SolidColorBrush x:Key="FocusFriendsCardBackgroundBrush" Color="{DynamicResource FocusFriendsCardBackground}" />
     <SolidColorBrush x:Key="BadgeStatusFriendsBrush" Color="{DynamicResource BadgeStatusFriends}" />
@@ -360,8 +363,8 @@
     <!-- == STATS VIEW == -->
     <SolidColorBrush x:Key="TextHighlightStatViewBrush" Color="{DynamicResource TextHighlightStatView}" />
     <SolidColorBrush x:Key="TextTitleStatViewBrush" Color="{DynamicResource TextTitleStatView}" />
-    <SolidColorBrush x:Key="CardStatBackgroundBrush" Color="{DynamicResource CardStatBackground}" />
-    <SolidColorBrush x:Key="CardStatBorderBrush" Color="{DynamicResource CardStatBorder}" />
+    
+    
     <SolidColorBrush x:Key="AccentCardStatBrush" Color="{DynamicResource AccentCardStat}" />
     <SolidColorBrush x:Key="BannerStatsBackgroundBrush" Color="{DynamicResource BannerStatsBackground}" />
 
@@ -375,28 +378,28 @@
     <SolidColorBrush x:Key="FocusCardNewsBackgroundBrush" Color="{DynamicResource FocusCardNewsBackground}" />
     <SolidColorBrush x:Key="AccentCardNewsBrush" Color="{DynamicResource AccentCardNews}" />
 
-    <SolidColorBrush x:Key="TabNewsBackgroundSelectedBrush" Color="{DynamicResource TabNewsBackgroundSelected}" />
-    <SolidColorBrush x:Key="TabNewsBackgroundFocusBrush" Color="{DynamicResource TabNewsBackgroundFocus}" />
+    
+    
 
     <!-- == ACHIEVEMENTS / SUCCESS VIEW == -->
     <SolidColorBrush x:Key="SuccessMainTextColorCardBrush" Color="{DynamicResource SuccessMainTextColorCard}" />
     <SolidColorBrush x:Key="SuccessMainTextColorBadgeBrush" Color="{DynamicResource SuccessMainTextColorBadge}" />
     <SolidColorBrush x:Key="BadgeTrophéeBrush" Color="{DynamicResource BadgeTrophée}" />
-    <SolidColorBrush x:Key="SuccessFriendsBackgroundBrush" Color="{DynamicResource SuccessFriendsBackground}" />
+    
     <SolidColorBrush x:Key="FocusSuccessCardBackgroundBrush" Color="{DynamicResource FocusSuccessCardBackground}" />
-    <SolidColorBrush x:Key="SuccessBannerBackgroundBrush" Color="{DynamicResource SuccessBannerBackground}" />
+    
 
     <!-- == OLD BRUSH == -->
-    <SolidColorBrush x:Key="BorderBrushAHBrush" Color="{DynamicResource BorderBrushAH}" />
+    
     <SolidColorBrush x:Key="BackgroundAHBrush" Color="{DynamicResource BackgroundAH}" />
-    <SolidColorBrush x:Key="CardStatBrush" Color="{DynamicResource CardStat}" />
-    <SolidColorBrush x:Key="CardBorderBrush" Color="{StaticResource CardBorder}" />
+    
+    
     <SolidColorBrush x:Key="BackgroundAHDarkBrush" Color="{DynamicResource BackgroundAHDark}" />
     <SolidColorBrush x:Key="ColorBottomBarOtherViewBrush" Color="{DynamicResource ColorBottomBarOtherView}" />
     <SolidColorBrush x:Key="AccentBrush" Color="{DynamicResource Accent}" />
 
 
-    <!-- ========================================================== 4) GRADIENTS ========================================================== -->
+    <!-- ===== 4) GRADIENTS ===== -->
 
     <!-- == BARS / MENUS == -->
     <LinearGradientBrush x:Key="TopBar" StartPoint="0,0" EndPoint="0,1">
@@ -550,10 +553,7 @@
         <GradientStop Color="{DynamicResource SuccessBannerBorder_Right}" Offset="1"/>
     </LinearGradientBrush>
 
-    <LinearGradientBrush x:Key="SuccessDetailsCardBackground" StartPoint="0,0" EndPoint="0,1">
-        <GradientStop Color="{DynamicResource SuccessDetailsCardTop}" Offset="0.00"/>
-        <GradientStop Color="{DynamicResource SuccessDetailsCardBottom}" Offset="1.00"/>
-    </LinearGradientBrush>
+    
 
     <LinearGradientBrush x:Key="SuccessMainCardBackground" StartPoint="0,0" EndPoint="0,1">
         <GradientStop Color="{DynamicResource SuccessCardTopOverlay}" Offset="0"/>
@@ -604,27 +604,11 @@
         <GradientStop Color="{DynamicResource ShadeBottom_Stop2}" Offset="1"/>
     </LinearGradientBrush>
 
-    <LinearGradientBrush x:Key="ShadeBottomScreenShot" StartPoint="0,1" EndPoint="0,0">
-        <GradientStop Color="{DynamicResource ShadeBottomScreenShot_Stop0}" Offset="0.00"/>
-        <GradientStop Color="{DynamicResource ShadeBottomScreenShot_Stop1}" Offset="0.2"/>
-        <GradientStop Color="{DynamicResource ShadeBottomScreenShot_Stop2}" Offset="0.3"/>
-        <GradientStop Color="{DynamicResource ShadeBottomScreenShot_Stop3}" Offset="0.4"/>
-        <GradientStop Color="{DynamicResource ShadeBottomScreenShot_Stop4}" Offset="0.5"/>
-    </LinearGradientBrush>
+    
 
-    <LinearGradientBrush x:Key="ShadeTop" StartPoint="1,0" EndPoint="0,0">
-        <GradientStop Color="{DynamicResource ShadeTop_Stop0}" Offset="0.00"/>
-        <GradientStop Color="{DynamicResource ShadeTop_Stop1}" Offset="0.05"/>
-        <GradientStop Color="{DynamicResource ShadeTop_Stop2}" Offset="0.15"/>
-        <GradientStop Color="{DynamicResource ShadeTop_Stop3}" Offset="0.25"/>
-    </LinearGradientBrush>
+    
 
-    <LinearGradientBrush x:Key="ShadeLeft" StartPoint="0,0" EndPoint="1,0">
-        <GradientStop Color="{DynamicResource ShadeLeft_Stop0}" Offset="0.0"/>
-        <GradientStop Color="{DynamicResource ShadeLeft_Stop1}" Offset="0.15"/>
-        <GradientStop Color="{DynamicResource ShadeLeft_Stop2}" Offset="0.30"/>
-        <GradientStop Color="{DynamicResource ShadeLeft_Stop3}" Offset="0.45"/>
-    </LinearGradientBrush>
+    
 
 
     <!-- == FX == -->
@@ -664,26 +648,11 @@
         <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
     </Style>
 
-    <Style x:Key="TextBottomDetailsStyle" TargetType="TextBlock">
-        <Setter Property="FontSize" Value="22" />
-        <Setter Property="FontFamily" Value="{DynamicResource FontMain}" />
-        <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
-        <Setter Property="FontWeight" Value="Regular" />
-    </Style>
+    
 
-    <Style x:Key="TextBlockLight" TargetType="TextBlock">
-        <Setter Property="FontSize" Value="{DynamicResource FontSize}" />
-        <Setter Property="FontFamily" Value="{DynamicResource FontMain}" />
-        <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
-        <Setter Property="FontWeight" Value="Light" />
-    </Style>
+    
 
-    <Style x:Key="TextBlockSemiBold" TargetType="TextBlock">
-        <Setter Property="FontSize" Value="{DynamicResource FontSize}" />
-        <Setter Property="FontFamily" Value="{DynamicResource FontMain}" />
-        <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
-        <Setter Property="FontWeight" Value="SemiBold" />
-    </Style>
+    
 
 
     <Style x:Key="TextBlockBoldBaseStyle" TargetType="TextBlock">
@@ -705,11 +674,7 @@
         <Setter Property="Foreground" Value="{DynamicResource TextDetailBrush}" />
     </Style>
 
-    <Style x:Key="TextBlockMiniStyle" TargetType="TextBlock">
-        <Setter Property="FontSize" Value="{DynamicResource FontSize}" />
-        <Setter Property="FontFamily" Value="{DynamicResource FontMain}" />
-        <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
-    </Style>
+    
 
     <Style x:Key="InfoValueStyle" TargetType="TextBlock" BasedOn="{StaticResource TextBlockAltDetailStyle}">
         <Setter Property="FontSize" Value="26"/>
@@ -726,47 +691,16 @@
         <Setter Property="SnapsToDevicePixels" Value="True"/>
     </Style>
 
-    <!-- ThemeOptions -->
+    <!-- Options -->
 
     <!-- GROS TITRE -->
-    <Style x:Key="TextThemeOptionStyle" TargetType="TextBlock" BasedOn="{StaticResource TextBlockBaseStyle}">
-        <Setter Property="TextWrapping" Value="Wrap"/>
-        <Setter Property="HorizontalAlignment" Value="Center"/>
-        <Setter Property="TextAlignment" Value="Center"/>
-        <Setter Property="FontSize" Value="34"/>
-        <Setter Property="FontWeight" Value="SemiBold"/>
-        <Setter Property="Foreground" Value="{DynamicResource TextHighlightBrush}"/>
-        <Setter Property="Margin" Value="0,0,0,2"/>
-        <Setter Property="MaxWidth" Value="1200"/>
-        <Setter Property="Padding" Value="0"/>
-    </Style>
+    
 
     <!-- SOUS-TITRE (mini header “section”) -->
-    <Style x:Key="TextThemeOptionStyleSousTitre" TargetType="TextBlock" BasedOn="{StaticResource TextBlockBaseStyle}">
-        <Setter Property="TextWrapping" Value="Wrap"/>
-        <Setter Property="FontSize" Value="17"/>
-        <Setter Property="FontWeight" Value="Normal"/>
-        <Setter Property="Foreground" Value="{DynamicResource TextAltBrush}"/>
-        <Setter Property="Opacity" Value="0.8"/>
-        <Setter Property="LineHeight" Value="18"/>
-        <Setter Property="HorizontalAlignment" Value="Left"/>
-        <Setter Property="TextTrimming" Value="None"/>
-        <Setter Property="MaxWidth" Value="900"/>
-        <Setter Property="Margin" Value="10,0,0,0"/>
-    </Style>
+    
 
     <!-- TEXTE MINI (notes/descr) -->
-    <Style x:Key="TextThemeOptionStyleMini" TargetType="TextBlock" BasedOn="{StaticResource TextBlockBaseStyle}">
-        <Setter Property="TextWrapping" Value="Wrap"/>
-        <Setter Property="FontSize" Value="15"/>
-        <Setter Property="FontWeight" Value="Normal"/>
-        <Setter Property="Foreground" Value="{DynamicResource TextAltBrush}"/>
-        <Setter Property="Opacity" Value="0.8"/>
-        <Setter Property="LineHeight" Value="18"/>
-        <Setter Property="HorizontalAlignment" Value="Left"/>
-        <Setter Property="TextTrimming" Value="None"/>
-        <Setter Property="MaxWidth" Value="900"/>
-        <Setter Property="Margin" Value="10,4,0,16"/>
-    </Style>
+    
 
 </ResourceDictionary>
+

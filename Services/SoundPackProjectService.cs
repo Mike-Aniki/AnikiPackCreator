@@ -68,6 +68,18 @@ public static class SoundPackProjectService
             }
         }
 
+        // Upgrade the old hub cues to the single page-navigation slot.
+        if (!document.Sounds.Any(item => item.Key == "change-page" && !string.IsNullOrWhiteSpace(item.SourcePath)))
+        {
+            var legacy = new[] { "home-hub-open", "home-hub-close" }
+                .Select(key => document.Sounds.FirstOrDefault(item => item.Key == key && !string.IsNullOrWhiteSpace(item.SourcePath)))
+                .FirstOrDefault(item => item != null);
+            if (legacy != null)
+            {
+                document.Sounds.RemoveAll(item => item.Key == "change-page");
+                document.Sounds.Add(new SoundPackSoundProjectState { Key="change-page", SourcePath=legacy.SourcePath });
+            }
+        }
         return document;
     }
 

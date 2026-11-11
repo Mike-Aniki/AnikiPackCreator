@@ -1,4 +1,4 @@
-﻿using AnikiVisualPackCreator.Models;
+using AnikiVisualPackCreator.Models;
 using AnikiVisualPackCreator.Services;
 using Loc = AnikiVisualPackCreator.Localization.LocalizationService;
 using Microsoft.Win32;
@@ -19,6 +19,13 @@ namespace AnikiVisualPackCreator;
 
 public partial class ColorPackWindow : UserControl, INotifyPropertyChanged
 {
+    private string badges = "#21242A";
+    private string activeButtons = "#21242A";
+    private string outgoingMessages = "#21242A";
+    private Dictionary<string, string> expertOverrides = new();
+    private string? previousAutomaticXaml;
+    private Action? undoPalette;
+    private HashSet<string> lastSimpleChanges = new();
     private string primaryAccent = ColorPackPalette.DefaultPrimaryAccent;
     private string secondaryAccent = ColorPackPalette.DefaultSecondaryAccent;
     private string focusColor = ColorPackPalette.DefaultFocus;
@@ -28,6 +35,7 @@ public partial class ColorPackWindow : UserControl, INotifyPropertyChanged
     private string backgroundColor = ColorPackPalette.DefaultBackground;
     private string barsColor = ColorPackPalette.DefaultBars;
     private string menusColor = ColorPackPalette.DefaultMenus;
+    private string cinematicOverlayColor = ColorPackPalette.DefaultCinematicOverlay;
     private string menuHeaderColor = ColorPackPalette.DefaultMenuHeader;
     private string cardsColor = ColorPackPalette.DefaultCards;
     private string borderColor = ColorPackPalette.DefaultBorder;
@@ -68,6 +76,24 @@ public partial class ColorPackWindow : UserControl, INotifyPropertyChanged
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
+
+    public string Badges
+    {
+        get => badges;
+        set => SetPaletteValue(ref badges, value, nameof(Badges), nameof(BadgesBrush));
+    }
+
+    public string ActiveButtons
+    {
+        get => activeButtons;
+        set => SetPaletteValue(ref activeButtons, value, nameof(ActiveButtons), nameof(ActiveButtonsBrush));
+    }
+
+    public string OutgoingMessages
+    {
+        get => outgoingMessages;
+        set => SetPaletteValue(ref outgoingMessages, value, nameof(OutgoingMessages), nameof(OutgoingMessagesBrush));
+    }
 
     public string PrimaryAccent
     {
@@ -117,6 +143,12 @@ public partial class ColorPackWindow : UserControl, INotifyPropertyChanged
         set => SetPaletteValue(ref menusColor, value, nameof(MenusColor), nameof(MenusColorBrush));
     }
 
+    public string CinematicOverlayColor
+    {
+        get => cinematicOverlayColor;
+        set => SetPaletteValue(ref cinematicOverlayColor, value, nameof(CinematicOverlayColor), nameof(CinematicOverlayColorBrush));
+    }
+
     public string MenuHeaderColor
     {
         get => menuHeaderColor;
@@ -159,6 +191,9 @@ public partial class ColorPackWindow : UserControl, INotifyPropertyChanged
         set => SetPaletteValue(ref highlightText, value, nameof(HighlightText), nameof(HighlightTextBrush));
     }
 
+    public Brush BadgesBrush => BrushFromMaster(Badges, "#21242A");
+    public Brush ActiveButtonsBrush => BrushFromMaster(ActiveButtons, "#21242A");
+    public Brush OutgoingMessagesBrush => BrushFromMaster(OutgoingMessages, "#21242A");
     public Brush PrimaryAccentBrush => BrushFromMaster(PrimaryAccent, ColorPackPalette.DefaultPrimaryAccent);
     public Brush SecondaryAccentBrush => BrushFromMaster(SecondaryAccent, ColorPackPalette.DefaultSecondaryAccent);
     public Brush FocusColorBrush => BrushFromMaster(FocusColor, ColorPackPalette.DefaultFocus);
@@ -168,6 +203,7 @@ public partial class ColorPackWindow : UserControl, INotifyPropertyChanged
     public Brush BackgroundBrush => BrushFromMaster(BackgroundColor, ColorPackPalette.DefaultBackground);
     public Brush BarsColorBrush => BrushFromMaster(BarsColor, ColorPackPalette.DefaultBars);
     public Brush MenusColorBrush => BrushFromMaster(MenusColor, ColorPackPalette.DefaultMenus);
+    public Brush CinematicOverlayColorBrush => BrushFromMaster(CinematicOverlayColor, ColorPackPalette.DefaultCinematicOverlay);
     public Brush MenuHeaderColorBrush => BrushFromMaster(MenuHeaderColor, ColorPackPalette.DefaultMenuHeader);
     public Brush CardsColorBrush => BrushFromMaster(CardsColor, ColorPackPalette.DefaultCards);
     public Brush BorderColorBrush => BrushFromMaster(BorderColor, ColorPackPalette.DefaultBorder);
@@ -251,6 +287,10 @@ public partial class ColorPackWindow : UserControl, INotifyPropertyChanged
             return;
         }
 
+        var previousValue = field;
+        var previousOverrides = new Dictionary<string, string>(expertOverrides);
+        if (!suppressDirtyState)
+            undoPalette = () => { SetMasterColor(PropertyNameToPreviewFamilyKey(propertyName)!, previousValue); expertOverrides = previousOverrides; RefreshPreview(); };
         field = next;
         OnPropertyChanged(propertyName);
         OnPropertyChanged(brushPropertyName);
@@ -264,8 +304,10 @@ public partial class ColorPackWindow : UserControl, INotifyPropertyChanged
 
         if (CurrentColorsAreValid())
         {
+            if (!suppressDirtyState) ReconcileExpertOverrides();
             RefreshPreview();
-            StatusText = Loc.Get("ColorStatusPaletteUpdated");
+            StatusText = expertOverrides.Count == 0 ? Loc.Get("ColorStatusPaletteUpdated") : $"Personnalisé · {expertOverrides.Count} ressources expertes";
+
         }
     }
 
@@ -327,9 +369,16 @@ public partial class ColorPackWindow : UserControl, INotifyPropertyChanged
         {
             case "Menus":
                 PreviewMenusTab.IsChecked = true;
+                if (key == "CinematicOverlay" && !suppressDirtyState)
+                {
+                    PreviewCinematicOverlay.IsChecked = true;
+                }
                 break;
             case "Hub":
                 PreviewHubTab.IsChecked = true;
+                break;
+            case "Social":
+                PreviewSocialTab.IsChecked = true;
                 break;
             case "Details":
                 PreviewDetailsTab.IsChecked = true;
@@ -342,6 +391,9 @@ public partial class ColorPackWindow : UserControl, INotifyPropertyChanged
 
     private static string? PropertyNameToPreviewFamilyKey(string propertyName) => propertyName switch
     {
+        nameof(Badges) => "Badges",
+        nameof(ActiveButtons) => "ActiveButtons",
+        nameof(OutgoingMessages) => "OutgoingMessages",
         nameof(PrimaryAccent) => "PrimaryAccent",
         nameof(SecondaryAccent) => "SecondaryAccent",
         nameof(FocusColor) => "Focus",
@@ -350,6 +402,7 @@ public partial class ColorPackWindow : UserControl, INotifyPropertyChanged
         nameof(BackgroundColor) => "Background",
         nameof(BarsColor) => "Bars",
         nameof(MenusColor) => "Menus",
+        nameof(CinematicOverlayColor) => "CinematicOverlay",
         nameof(MenuHeaderColor) => "MenuHeader",
         nameof(CardsColor) => "Cards",
         nameof(BorderColor) => "Border",
@@ -362,6 +415,9 @@ public partial class ColorPackWindow : UserControl, INotifyPropertyChanged
 
     private static string GetPreviewFamilyLabelKey(string key) => key switch
     {
+        "Badges" => "ColorBadges",
+        "ActiveButtons" => "ColorActiveButtons",
+        "OutgoingMessages" => "ColorOutgoingMessages",
         "PrimaryAccent" => "ColorPrimaryAccent",
         "SecondaryAccent" => "ColorSecondaryAccent",
         "Focus" => "ColorFocus",
@@ -370,6 +426,7 @@ public partial class ColorPackWindow : UserControl, INotifyPropertyChanged
         "Background" => "ColorBackground",
         "Bars" => "ColorBars",
         "Menus" => "ColorMenus",
+        "CinematicOverlay" => "ColorCinematicOverlay",
         "MenuHeader" => "ColorMenuHeader",
         "Cards" => "ColorCards",
         "Border" => "ColorBorder",
@@ -384,9 +441,11 @@ public partial class ColorPackWindow : UserControl, INotifyPropertyChanged
 
     private static string GetPreviewSuggestedScene(string key) => key switch
     {
-        "Menus" => "Menus",
-        "Background" or "Cards" or "Border" or "PrimaryText" or "SecondaryText" or "HighlightText" or "SecondaryAccent" => "Hub",
+        "Menus" or "CinematicOverlay" or "Cards" or "Focus" or "Border" or "Bars" or
+            "PrimaryText" or "SecondaryText" or "HighlightText" => "Menus",
+        "Background" or "SecondaryAccent" => "Hub",
         "Progress" => "Details",
+        "Badges" or "ActiveButtons" or "OutgoingMessages" => "Social",
         _ => "Main"
     };
 
@@ -395,11 +454,16 @@ public partial class ColorPackWindow : UserControl, INotifyPropertyChanged
         "Menus" => "ColorPreviewTabMenus",
         "Hub" => "ColorPreviewTabHub",
         "Details" => "ColorPreviewTabDetails",
+        "Social" => "ColorPreviewTabSocial",
         _ => "ColorPreviewTabMain"
     };
 
     private void ResetPaletteClick(object sender, RoutedEventArgs e)
     {
+        expertOverrides.Clear(); previousAutomaticXaml = null;
+        Badges = "#21242A";
+        ActiveButtons = "#21242A";
+        OutgoingMessages = "#21242A";
         PrimaryAccent = ColorPackPalette.DefaultPrimaryAccent;
         SecondaryAccent = ColorPackPalette.DefaultSecondaryAccent;
         FocusColor = ColorPackPalette.DefaultFocus;
@@ -408,6 +472,7 @@ public partial class ColorPackWindow : UserControl, INotifyPropertyChanged
         BackgroundColor = ColorPackPalette.DefaultBackground;
         BarsColor = ColorPackPalette.DefaultBars;
         MenusColor = ColorPackPalette.DefaultMenus;
+        CinematicOverlayColor = ColorPackPalette.DefaultCinematicOverlay;
         MenuHeaderColor = ColorPackPalette.DefaultMenuHeader;
         CardsColor = ColorPackPalette.DefaultCards;
         BorderColor = ColorPackPalette.DefaultBorder;
@@ -435,6 +500,10 @@ public partial class ColorPackWindow : UserControl, INotifyPropertyChanged
             AuthorTextBox.Text = string.Empty;
             VersionTextBox.Text = Loc.Get("DefaultVersion");
             DescriptionTextBox.Text = string.Empty;
+            expertOverrides.Clear(); previousAutomaticXaml = null;
+            Badges = "#21242A";
+            ActiveButtons = "#21242A";
+            OutgoingMessages = "#21242A";
             PrimaryAccent = ColorPackPalette.DefaultPrimaryAccent;
             SecondaryAccent = ColorPackPalette.DefaultSecondaryAccent;
             FocusColor = ColorPackPalette.DefaultFocus;
@@ -443,6 +512,7 @@ public partial class ColorPackWindow : UserControl, INotifyPropertyChanged
             BackgroundColor = ColorPackPalette.DefaultBackground;
             BarsColor = ColorPackPalette.DefaultBars;
             MenusColor = ColorPackPalette.DefaultMenus;
+            CinematicOverlayColor = ColorPackPalette.DefaultCinematicOverlay;
             MenuHeaderColor = ColorPackPalette.DefaultMenuHeader;
             CardsColor = ColorPackPalette.DefaultCards;
             BorderColor = ColorPackPalette.DefaultBorder;
@@ -491,6 +561,10 @@ public partial class ColorPackWindow : UserControl, INotifyPropertyChanged
             AuthorTextBox.Text = document.Author;
             VersionTextBox.Text = document.Version;
             DescriptionTextBox.Text = document.Description;
+            Badges = document.Badges;
+            ActiveButtons = document.ActiveButtons;
+            OutgoingMessages = document.OutgoingMessages;
+            expertOverrides = new(document.ExpertOverrides); previousAutomaticXaml = null;
             PrimaryAccent = document.PrimaryAccent;
             SecondaryAccent = document.SecondaryAccent;
             FocusColor = document.Focus;
@@ -499,6 +573,7 @@ public partial class ColorPackWindow : UserControl, INotifyPropertyChanged
             BackgroundColor = document.Background;
             BarsColor = document.Bars;
             MenusColor = document.Menus;
+            CinematicOverlayColor = document.CinematicOverlay;
             MenuHeaderColor = document.MenuHeader;
             CardsColor = document.Cards;
             BorderColor = document.Border;
@@ -700,6 +775,9 @@ public partial class ColorPackWindow : UserControl, INotifyPropertyChanged
 
     private void AddColorValidationErrors(List<string> errors)
     {
+        AddColorError(errors, Loc.Get("ColorBadges"), Badges);
+        AddColorError(errors, Loc.Get("ColorActiveButtons"), ActiveButtons);
+        AddColorError(errors, Loc.Get("ColorOutgoingMessages"), OutgoingMessages);
         AddColorError(errors, Loc.Get("ColorPrimaryAccent"), PrimaryAccent);
         AddColorError(errors, Loc.Get("ColorSecondaryAccent"), SecondaryAccent);
         AddColorError(errors, Loc.Get("ColorFocus"), FocusColor);
@@ -708,6 +786,7 @@ public partial class ColorPackWindow : UserControl, INotifyPropertyChanged
         AddColorError(errors, Loc.Get("ColorBackground"), BackgroundColor);
         AddColorError(errors, Loc.Get("ColorBars"), BarsColor);
         AddColorError(errors, Loc.Get("ColorMenus"), MenusColor);
+        AddColorError(errors, Loc.Get("ColorCinematicOverlay"), CinematicOverlayColor);
         AddColorError(errors, Loc.Get("ColorMenuHeader"), MenuHeaderColor);
         AddColorError(errors, Loc.Get("ColorCards"), CardsColor);
         AddColorError(errors, Loc.Get("ColorBorder"), BorderColor);
@@ -728,6 +807,9 @@ public partial class ColorPackWindow : UserControl, INotifyPropertyChanged
     private bool CurrentColorsAreValid()
     {
         return ColorPackGeneratorService.IsValidMasterColor(PrimaryAccent) &&
+               ColorPackGeneratorService.IsValidMasterColor(Badges) &&
+               ColorPackGeneratorService.IsValidMasterColor(ActiveButtons) &&
+               ColorPackGeneratorService.IsValidMasterColor(OutgoingMessages) &&
                ColorPackGeneratorService.IsValidMasterColor(SecondaryAccent) &&
                ColorPackGeneratorService.IsValidMasterColor(FocusColor) &&
                ColorPackGeneratorService.IsValidMasterColor(ActionButtonsColor) &&
@@ -735,6 +817,7 @@ public partial class ColorPackWindow : UserControl, INotifyPropertyChanged
                ColorPackGeneratorService.IsValidMasterColor(BackgroundColor) &&
                ColorPackGeneratorService.IsValidMasterColor(BarsColor) &&
                ColorPackGeneratorService.IsValidMasterColor(MenusColor) &&
+               ColorPackGeneratorService.IsValidMasterColor(CinematicOverlayColor) &&
                ColorPackGeneratorService.IsValidMasterColor(MenuHeaderColor) &&
                ColorPackGeneratorService.IsValidMasterColor(CardsColor) &&
                ColorPackGeneratorService.IsValidMasterColor(BorderColor) &&
@@ -748,6 +831,10 @@ public partial class ColorPackWindow : UserControl, INotifyPropertyChanged
     {
         return new ColorPackPalette
         {
+            Badges = ColorPackGeneratorService.NormalizeMasterColor(Badges),
+            ActiveButtons = ColorPackGeneratorService.NormalizeMasterColor(ActiveButtons),
+            OutgoingMessages = ColorPackGeneratorService.NormalizeMasterColor(OutgoingMessages),
+            ExpertOverrides = new(expertOverrides),
             PrimaryAccent = ColorPackGeneratorService.NormalizeMasterColor(PrimaryAccent),
             SecondaryAccent = ColorPackGeneratorService.NormalizeMasterColor(SecondaryAccent),
             Focus = ColorPackGeneratorService.NormalizeMasterColor(FocusColor),
@@ -756,6 +843,7 @@ public partial class ColorPackWindow : UserControl, INotifyPropertyChanged
             Background = ColorPackGeneratorService.NormalizeMasterColor(BackgroundColor),
             Bars = ColorPackGeneratorService.NormalizeMasterColor(BarsColor),
             Menus = ColorPackGeneratorService.NormalizeMasterColor(MenusColor),
+            CinematicOverlay = ColorPackGeneratorService.NormalizeMasterColor(CinematicOverlayColor),
             MenuHeader = ColorPackGeneratorService.NormalizeMasterColor(MenuHeaderColor),
             Cards = ColorPackGeneratorService.NormalizeMasterColor(CardsColor),
             Border = ColorPackGeneratorService.NormalizeMasterColor(BorderColor),
@@ -777,6 +865,10 @@ public partial class ColorPackWindow : UserControl, INotifyPropertyChanged
             Version = VersionTextBox.Text.Trim(),
             Description = DescriptionTextBox.Text.Trim(),
             TemplateId = ColorPackPalette.ReferenceTemplateId,
+            Badges = palette.Badges,
+            ActiveButtons = palette.ActiveButtons,
+            OutgoingMessages = palette.OutgoingMessages,
+            ExpertOverrides = new(expertOverrides),
             PrimaryAccent = palette.PrimaryAccent,
             SecondaryAccent = palette.SecondaryAccent,
             Focus = palette.Focus,
@@ -785,6 +877,7 @@ public partial class ColorPackWindow : UserControl, INotifyPropertyChanged
             Background = palette.Background,
             Bars = palette.Bars,
             Menus = palette.Menus,
+            CinematicOverlay = palette.CinematicOverlay,
             MenuHeader = palette.MenuHeader,
             Cards = palette.Cards,
             Border = palette.Border,
@@ -795,12 +888,81 @@ public partial class ColorPackWindow : UserControl, INotifyPropertyChanged
         };
     }
 
+    private string AutomaticXaml()
+    {
+        var palette = BuildPalette();
+        palette.ExpertOverrides.Clear();
+        return ColorPackGeneratorService.Generate(palette);
+    }
+
+    private void ReconcileExpertOverrides()
+    {
+        var next = AutomaticXaml();
+        if (previousAutomaticXaml != null)
+        {
+            var before = ExpertColorService.Resources(previousAutomaticXaml);
+            lastSimpleChanges = ExpertColorService.Resources(next).Where(p => !before.TryGetValue(p.Key, out var old) || !XNode.DeepEquals(old, p.Value)).Select(p => p.Key).ToHashSet();
+            ExpertColorService.RemoveAffectedOverrides(previousAutomaticXaml, next, expertOverrides);
+        }
+        previousAutomaticXaml = next;
+    }
+
+    private void ExpertModeClick(object sender, RoutedEventArgs e)
+    {
+        if (!CurrentColorsAreValid()) return;
+        var editor = new ExpertPaletteWindow(AutomaticXaml(), expertOverrides, lastSimpleChanges) { Owner = Window.GetWindow(this) };
+        if (editor.ShowDialog() == true)
+        {
+            var old = new Dictionary<string, string>(expertOverrides);
+            undoPalette = () => { expertOverrides = old; RefreshPreview(); };
+            expertOverrides = editor.Result;
+            MarkDirty();
+            RefreshPreview();
+            StatusText = $"Personnalisé · {expertOverrides.Count} ressources expertes";
+        }
+    }
+
+    private void UndoPaletteClick(object sender, RoutedEventArgs e)
+    {
+        var undo = undoPalette;
+        undo?.Invoke();
+        undoPalette = null;
+        StatusText = Loc.Get("ColorStatusPaletteUpdated");
+    }
+
+    // The expert studio renders the same scenes as the simplified editor.
+    internal System.Windows.Media.ImageSource RenderExpertScene(string xaml, string scene)
+    {
+        PreviewMainTab.IsChecked = scene == "Bibliothèque";
+        PreviewHubTab.IsChecked = scene == "Accueil";
+        PreviewMenusTab.IsChecked = scene == "Panneaux";
+        PreviewDetailsTab.IsChecked = scene == "Fiche de jeu";
+        PreviewSocialTab.IsChecked = scene == "Social";
+        var dictionary = ParsePreviewResourceDictionary(xaml);
+        AddCurrentThemeSurfaces(dictionary);
+        PreviewResourceHost.Resources.MergedDictionaries.Clear();
+        PreviewResourceHost.Resources.MergedDictionaries.Add(dictionary);
+        Width = 1600; Height = 1050;
+        Measure(new Size(1600,1050)); Arrange(new Rect(0,0,1600,1050)); UpdateLayout();
+        var width = Math.Max(1, PreviewResourceHost.ActualWidth);
+        var height = Math.Max(1, PreviewResourceHost.ActualHeight);
+        var bitmap = new System.Windows.Media.Imaging.RenderTargetBitmap((int)Math.Ceiling(width*2), (int)Math.Ceiling(height*2), 192,192,PixelFormats.Pbgra32);
+        var drawing = new DrawingVisual();
+        using (var context = drawing.RenderOpen())
+            context.DrawRectangle(new VisualBrush(PreviewResourceHost) { Stretch=Stretch.Fill }, null, new Rect(0,0,width,height));
+        bitmap.Render(drawing); bitmap.Freeze();
+        return bitmap;
+    }
+
     private void RefreshPreview()
     {
         try
         {
+            previousAutomaticXaml = AutomaticXaml();
             var generated = ColorPackGeneratorService.Generate(BuildPalette());
             var dictionary = ParsePreviewResourceDictionary(generated);
+            AddCurrentThemeSurfaces(dictionary);
+            UpdateContrastWarning(dictionary);
 
             PreviewResourceHost.Resources.MergedDictionaries.Clear();
             PreviewResourceHost.Resources.MergedDictionaries.Add(dictionary);
@@ -808,6 +970,77 @@ public partial class ColorPackWindow : UserControl, INotifyPropertyChanged
         catch
         {
         }
+    }
+
+    private string contrastWarning = string.Empty;
+    public string ContrastWarning
+    {
+        get => contrastWarning;
+        private set
+        {
+            contrastWarning = value;
+            OnPropertyChanged();
+        }
+    }
+
+    // Mirrors Aniki Helper's SettingsPaletteResources. These brushes belong to the theme,
+    // so they are injected into the preview only and never exported in colors.xaml.
+    private static void AddCurrentThemeSurfaces(ResourceDictionary resources)
+    {
+        Color ReadColor(string key) => (Color)resources[key];
+        Color Opaque(Color color) => Color.FromRgb(color.R, color.G, color.B);
+        Color Lighten(Color color) => Color.FromRgb(
+            (byte)(color.R + (255 - color.R) * 0.06),
+            (byte)(color.G + (255 - color.G) * 0.06),
+            (byte)(color.B + (255 - color.B) * 0.06));
+
+        var row = Opaque(ReadColor("OverlayMenu_Mid"));
+        var choice = Opaque(ReadColor("OverlayMenu_Bottom"));
+        resources["AnikiSettingsFlatRowBackground"] = new SolidColorBrush(row);
+        resources["AnikiSettingsFlatRowFocus"] = new SolidColorBrush(Lighten(row));
+        resources["AnikiSettingsChoiceBackground"] = new SolidColorBrush(choice);
+        resources["AnikiSettingsChoiceFocus"] = new SolidColorBrush(Lighten(choice));
+        resources["AnikiSettingsFlatRowLine"] = new SolidColorBrush(ReadColor("TextColor")) { Opacity = 0.12 };
+        resources["PreviewDarkTextBrush"] = new SolidColorBrush(ReadColor("TextColorDark"));
+    }
+
+    private void UpdateContrastWarning(ResourceDictionary resources)
+    {
+        var foreground = (Color)resources["TextColor"];
+        var secondary = (Color)resources["TextSecondaryColor"];
+        var row = ((SolidColorBrush)resources["AnikiSettingsFlatRowBackground"]).Color;
+        var focus = ((SolidColorBrush)resources["AnikiSettingsFlatRowFocus"]).Color;
+        var menuTop = (Color)resources["MenuBackground_Top"];
+        var menuBottom = (Color)resources["MenuBackground_Bottom"];
+        var page = (Color)resources["SecondaryViewBackground_Mid"];
+        var surfaces = new[] { row, focus, menuTop, menuBottom, page };
+        var minimum = surfaces.Min(background =>
+            Math.Min(ContrastRatio(foreground, background), ContrastRatio(secondary, background)));
+        ContrastWarning = minimum < 4.5
+            ? Loc.Format("ColorContrastWarning", minimum.ToString("0.0", CultureInfo.CurrentCulture))
+            : string.Empty;
+    }
+
+    private static double ContrastRatio(Color foreground, Color background)
+    {
+        // Composite text alpha over the surface before calculating relative luminance.
+        var alpha = foreground.A / 255.0;
+        var composite = Color.FromRgb(
+            (byte)Math.Round(foreground.R * alpha + background.R * (1 - alpha)),
+            (byte)Math.Round(foreground.G * alpha + background.G * (1 - alpha)),
+            (byte)Math.Round(foreground.B * alpha + background.B * (1 - alpha)));
+        static double Luminance(Color color)
+        {
+            static double Linear(byte value)
+            {
+                var channel = value / 255.0;
+                return channel <= 0.04045 ? channel / 12.92 : Math.Pow((channel + 0.055) / 1.055, 2.4);
+            }
+            return 0.2126 * Linear(color.R) + 0.7152 * Linear(color.G) + 0.0722 * Linear(color.B);
+        }
+        var text = Luminance(composite);
+        var surface = Luminance(background);
+        return (Math.Max(text, surface) + 0.05) / (Math.Min(text, surface) + 0.05);
     }
 
     private static ResourceDictionary ParsePreviewResourceDictionary(string xaml)
@@ -906,6 +1139,9 @@ public partial class ColorPackWindow : UserControl, INotifyPropertyChanged
 
     private string GetMasterColor(string key) => key switch
     {
+        "Badges" => Badges,
+        "ActiveButtons" => ActiveButtons,
+        "OutgoingMessages" => OutgoingMessages,
         "PrimaryAccent" => PrimaryAccent,
         "SecondaryAccent" => SecondaryAccent,
         "Focus" => FocusColor,
@@ -914,6 +1150,7 @@ public partial class ColorPackWindow : UserControl, INotifyPropertyChanged
         "Background" => BackgroundColor,
         "Bars" => BarsColor,
         "Menus" => MenusColor,
+        "CinematicOverlay" => CinematicOverlayColor,
         "MenuHeader" => MenuHeaderColor,
         "Cards" => CardsColor,
         "Border" => BorderColor,
@@ -926,6 +1163,9 @@ public partial class ColorPackWindow : UserControl, INotifyPropertyChanged
 
     private static string GetDefaultColor(string key) => key switch
     {
+        "Badges" => "#21242A",
+        "ActiveButtons" => "#21242A",
+        "OutgoingMessages" => "#21242A",
         "PrimaryAccent" => ColorPackPalette.DefaultPrimaryAccent,
         "SecondaryAccent" => ColorPackPalette.DefaultSecondaryAccent,
         "Focus" => ColorPackPalette.DefaultFocus,
@@ -948,6 +1188,9 @@ public partial class ColorPackWindow : UserControl, INotifyPropertyChanged
     {
         switch (key)
         {
+            case "Badges": Badges = value; break;
+            case "ActiveButtons": ActiveButtons = value; break;
+            case "OutgoingMessages": OutgoingMessages = value; break;
             case "PrimaryAccent": PrimaryAccent = value; break;
             case "SecondaryAccent": SecondaryAccent = value; break;
             case "Focus": FocusColor = value; break;
@@ -956,6 +1199,7 @@ public partial class ColorPackWindow : UserControl, INotifyPropertyChanged
             case "Background": BackgroundColor = value; break;
             case "Bars": BarsColor = value; break;
             case "Menus": MenusColor = value; break;
+            case "CinematicOverlay": CinematicOverlayColor = value; break;
             case "MenuHeader": MenuHeaderColor = value; break;
             case "Cards": CardsColor = value; break;
             case "Border": BorderColor = value; break;

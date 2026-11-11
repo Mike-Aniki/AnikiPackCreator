@@ -1,4 +1,4 @@
-﻿using AnikiVisualPackCreator.Models;
+using AnikiVisualPackCreator.Models;
 using Loc = AnikiVisualPackCreator.Localization.LocalizationService;
 using System.Text.Json;
 
@@ -29,6 +29,7 @@ public static class ColorPackProjectService
             throw new InvalidDataException(Loc.Format("ServiceUnsupportedFormatVersion", document.FormatVersion));
         }
 
+        document.ExpertOverrides ??= new();
         document.PackId ??= string.Empty;
         document.PackName ??= string.Empty;
         document.Author ??= string.Empty;
@@ -44,6 +45,11 @@ public static class ColorPackProjectService
         }
 
         document.PrimaryAccent = NormalizeOrDefault(document.PrimaryAccent, ColorPackPalette.DefaultPrimaryAccent);
+        var legacyAccent = ColorPackGeneratorService.GetLegacyAccentColor(document.PrimaryAccent);
+        document.Badges = NormalizeOrFallback(document.Badges, legacyAccent);
+        document.ActiveButtons = NormalizeOrFallback(document.ActiveButtons, legacyAccent);
+        document.OutgoingMessages = NormalizeOrFallback(document.OutgoingMessages, legacyAccent);
+
         document.SecondaryAccent = NormalizeOrDefault(document.SecondaryAccent, ColorPackPalette.DefaultSecondaryAccent);
         document.Background = NormalizeOrDefault(document.Background, ColorPackPalette.DefaultBackground);
         document.Border = NormalizeOrDefault(document.Border, ColorPackPalette.DefaultBorder);
@@ -55,6 +61,9 @@ public static class ColorPackProjectService
         document.Progress = NormalizeOrFallback(document.Progress, document.PrimaryAccent);
         document.Bars = NormalizeOrFallback(document.Bars, document.Background);
         document.Menus = NormalizeOrFallback(document.Menus, document.Background);
+        document.CinematicOverlay = string.IsNullOrWhiteSpace(document.CinematicOverlay)
+            ? ColorPackGeneratorService.GetLegacyCinematicOverlayColor(document.Menus)
+            : ColorPackGeneratorService.NormalizeMasterColor(document.CinematicOverlay);
         document.MenuHeader = NormalizeOrFallback(document.MenuHeader, document.Background);
         document.Cards = NormalizeOrFallback(document.Cards, document.Background);
         document.Notifications = NormalizeOrFallback(document.Notifications, document.Background);

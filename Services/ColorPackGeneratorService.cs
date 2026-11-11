@@ -1,4 +1,4 @@
-﻿using AnikiVisualPackCreator.Models;
+using AnikiVisualPackCreator.Models;
 using System.Globalization;
 using System.Text.RegularExpressions;
 
@@ -19,6 +19,7 @@ public static class ColorPackGeneratorService
     private static readonly Rgb ReferenceBackground = ParseRgb(ColorPackPalette.DefaultBackground);
     private static readonly Rgb ReferenceBars = ParseRgb(ColorPackPalette.DefaultBars);
     private static readonly Rgb ReferenceMenus = ParseRgb(ColorPackPalette.DefaultMenus);
+    private static readonly Rgb ReferenceCinematicOverlay = ParseRgb(ColorPackPalette.DefaultCinematicOverlay);
     private static readonly Rgb ReferenceMenuHeader = ParseRgb(ColorPackPalette.DefaultMenuHeader);
     private static readonly Rgb ReferenceCards = ParseRgb(ColorPackPalette.DefaultCards);
     private static readonly Rgb ReferenceBorder = ParseRgb(ColorPackPalette.DefaultBorder);
@@ -42,7 +43,7 @@ public static class ColorPackGeneratorService
 
     private static readonly HashSet<string> FocusKeys = new(StringComparer.OrdinalIgnoreCase)
     {
-        "GlowFocusColor", "SelectionLightColor", "FocusPrimaryColor", "FocusSecondaryColor",
+        "GlowFocusColor", "SelectionLightColor",
         "GameFocus_Left", "GameFocus_Right", "GameFocus_AnimatedContrast",
         "ButtonBackgroundFocus_Stop0", "ButtonBackgroundFocus_Stop1", "ButtonBackgroundFocus_Stop2", "ButtonBackgroundFocus_Stop3",
         "FocusFriendsCardBackground", "FocusFriendsCardBorder_Left", "FocusFriendsCardBorder_Right",
@@ -73,7 +74,6 @@ public static class ColorPackGeneratorService
     private static readonly HashSet<string> MenuKeys = new(StringComparer.OrdinalIgnoreCase)
     {
         "MenuBackground_Top", "MenuBackground_Bottom",
-        "OverlayMenu_Top", "OverlayMenu_Mid", "OverlayMenu_Bottom",
         "ControlBackgroundColor"
     };
 
@@ -95,7 +95,7 @@ public static class ColorPackGeneratorService
 
     private static readonly HashSet<string> PrimaryTextKeys = new(StringComparer.OrdinalIgnoreCase)
     {
-        "TextColor", "TextColorDark", "Hltb",
+        "TextColor", "TextColorDark",
         "ButtonIconColorLight", "ButtonIconColorDark",
         "TextHub", "TextHubNameAchievement", "TextHubBannerCardBottom",
         "TextTitleStatView",
@@ -124,6 +124,7 @@ public static class ColorPackGeneratorService
 
     private static readonly HashSet<string> CardSurfaceKeys = new(StringComparer.OrdinalIgnoreCase)
     {
+        "OverlayMenu_Top", "OverlayMenu_Mid", "OverlayMenu_Bottom",
         "BackgroundAH", "BackgroundAHDark", "CardStat", "BackgroundItemEndPoint",
         "ListBackground", "ListDetailsBackground",
         "HubCardBottomBackground", "HubButtonBackgroundNoFocus", "HubBannerBackground",
@@ -141,7 +142,7 @@ public static class ColorPackGeneratorService
         var template = ColorPackTemplateService.LoadReferenceTemplate();
         var target = new FamilyTargets(palette);
 
-        return ColorRegex.Replace(template, match =>
+        var generated = ColorRegex.Replace(template, match =>
         {
             var key = match.Groups["key"].Value;
             var originalHex = match.Groups["hex"].Value;
@@ -151,6 +152,13 @@ public static class ColorPackGeneratorService
 
             return match.Groups["prefix"].Value + ToArgbHex(transformed) + match.Groups["suffix"].Value;
         });
+        var semanticResources =
+            $"    <SolidColorBrush x:Key=\"BadgeBackgroundBrush\" Color=\"{palette.Badges}\" />\n" +
+            $"    <SolidColorBrush x:Key=\"ActiveButtonBackgroundBrush\" Color=\"{palette.ActiveButtons}\" />\n" +
+            $"    <SolidColorBrush x:Key=\"OutgoingMessageBackgroundBrush\" Color=\"{palette.OutgoingMessages}\" />\n" +
+            $"    <SolidColorBrush x:Key=\"SocialVoiceVolumeBrush\" Color=\"{{DynamicResource ProgressLight}}\" />\n" +
+            $"    <SolidColorBrush x:Key=\"SocialVoiceBorderBrush\" Color=\"{palette.Border}\" />\n";
+        return ExpertColorService.Apply(generated.Replace("</ResourceDictionary>", semanticResources + "</ResourceDictionary>"), palette.ExpertOverrides);
     }
 
     public static int CountTemplateColors()
@@ -161,6 +169,10 @@ public static class ColorPackGeneratorService
     public static void ValidatePalette(ColorPackPalette palette)
     {
         _ = ParseRgb(palette.PrimaryAccent);
+        _ = ParseRgb(palette.Badges);
+        _ = ParseRgb(palette.ActiveButtons);
+        _ = ParseRgb(palette.OutgoingMessages);
+
         _ = ParseRgb(palette.SecondaryAccent);
         _ = ParseRgb(palette.Focus);
         _ = ParseRgb(palette.ActionButtons);
@@ -169,6 +181,7 @@ public static class ColorPackGeneratorService
         _ = ParseRgb(palette.Background);
         _ = ParseRgb(palette.Bars);
         _ = ParseRgb(palette.Menus);
+        _ = ParseRgb(palette.CinematicOverlay);
         _ = ParseRgb(palette.MenuHeader);
         _ = ParseRgb(palette.Cards);
         _ = ParseRgb(palette.Border);
@@ -177,6 +190,18 @@ public static class ColorPackGeneratorService
         _ = ParseRgb(palette.PrimaryText);
         _ = ParseRgb(palette.SecondaryText);
         _ = ParseRgb(palette.HighlightText);
+    }
+
+    internal static string GetLegacyAccentColor(string primaryAccent)
+    {
+        var color = TransferColor(ParseRgb("#21242A"), ReferencePrimaryAccent, ParseRgb(primaryAccent));
+        return $"#{color.R:X2}{color.G:X2}{color.B:X2}";
+    }
+
+    internal static string GetLegacyCinematicOverlayColor(string menus)
+    {
+        var color = TransferColor(ReferenceCinematicOverlay, ReferenceMenus, ParseRgb(menus));
+        return $"#{color.R:X2}{color.G:X2}{color.B:X2}";
     }
 
     public static bool IsValidMasterColor(string? value)
@@ -224,6 +249,7 @@ public static class ColorPackGeneratorService
         if (IsShadeLikeKey(key)) return ColorFamily.MenuHeader;
         if (MenuHeaderKeys.Contains(key)) return ColorFamily.Menus;
         if (MenuKeys.Contains(key)) return ColorFamily.Menus;
+        if (string.Equals(key, "CinematicOverlayTintColor", StringComparison.OrdinalIgnoreCase)) return ColorFamily.CinematicOverlay;
         if (BarKeys.Contains(key)) return ColorFamily.Bars;
         if (CardSurfaceKeys.Contains(key)) return ColorFamily.Cards;
         if (GeneralBorderKeys.Contains(key)) return ColorFamily.Border;
@@ -283,6 +309,7 @@ public static class ColorPackGeneratorService
             ColorFamily.Background => (ReferenceBackground, target.Background),
             ColorFamily.Bars => (ReferenceBars, target.Bars),
             ColorFamily.Menus => (ReferenceMenus, target.Menus),
+            ColorFamily.CinematicOverlay => (ReferenceCinematicOverlay, target.CinematicOverlay),
             ColorFamily.MenuHeader => (ReferenceMenuHeader, target.MenuHeader),
             ColorFamily.Cards => (ReferenceCards, target.Cards),
             ColorFamily.Border => (ReferenceBorder, target.Border),
@@ -450,6 +477,7 @@ public static class ColorPackGeneratorService
         Background,
         Bars,
         Menus,
+        CinematicOverlay,
         MenuHeader,
         Cards,
         Border,
@@ -477,6 +505,7 @@ public static class ColorPackGeneratorService
             Background = ParseRgb(palette.Background);
             Bars = ParseRgb(palette.Bars);
             Menus = ParseRgb(palette.Menus);
+            CinematicOverlay = ParseRgb(palette.CinematicOverlay);
             MenuHeader = ParseRgb(palette.MenuHeader);
             Cards = ParseRgb(palette.Cards);
             Border = ParseRgb(palette.Border);
@@ -496,6 +525,7 @@ public static class ColorPackGeneratorService
         public Rgb Background { get; }
         public Rgb Bars { get; }
         public Rgb Menus { get; }
+        public Rgb CinematicOverlay { get; }
         public Rgb MenuHeader { get; }
         public Rgb Cards { get; }
         public Rgb Border { get; }

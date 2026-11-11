@@ -47,7 +47,10 @@ Add your content, preview it, save your project and export a ZIP ready for **Ani
 
 ## Visual Packs
 
-Create the **14 images** used throughout Aniki ReMake.
+Create the **14 required images** used throughout Aniki ReMake, plus an optional **Home profile card banner**.
+
+- Login banner: **550 × 200** (older 857 × 238 packs remain supported by the updated Aniki Helper)
+- Home profile card: **1100 × 300**, optional; existing packs can keep the StatView fallback
 
 - Drag & drop images
 - Reposition and zoom directly in the preview
@@ -65,7 +68,8 @@ Create the **14 images** used throughout Aniki ReMake.
 
 Replace Aniki ReMake sounds and ambient music.
 
-- 17 WAV sound slots
+- Page-change cue replaces the old Hub opening/closing cues; legacy sound projects are migrated automatically
+- WAV interface and event sound slots
 - 3 MP3 music slots
 - Built-in play / stop preview
 - Partial packs supported
@@ -78,11 +82,13 @@ Replace Aniki ReMake sounds and ambient music.
 
 ## Color Packs
 
-Create a complete theme palette using only **15 master colors**.
+Create a complete theme palette in **Simplified mode**, then refine individual colors and gradients in the **Expert Color Workshop**.
 
 The Creator automatically generates the rest of the Aniki ReMake palette and provides preview scenes for:
 
-**Main · Hub · Menus · Details**
+**Library · Home · Panels · Shortcuts and social · Game details**
+
+The Expert Workshop combines element navigation, a live theme preview, a visual color picker, draggable gradient stops and before/after comparison. Existing projects remain supported.
 
 **Project:** `.acpc`
 

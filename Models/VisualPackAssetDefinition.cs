@@ -1,4 +1,4 @@
-﻿using Loc = AnikiVisualPackCreator.Localization.LocalizationService;
+using Loc = AnikiVisualPackCreator.Localization.LocalizationService;
 
 namespace AnikiVisualPackCreator.Models;
 
@@ -10,8 +10,10 @@ public sealed class VisualPackAssetDefinition
         int width,
         int height,
         string description,
-        string? previewOverlayResource = null)
+        string? previewOverlayResource = null,
+        bool optional = false)
     {
+        Optional = optional;
         FileName = fileName;
         DisplayName = displayName;
         Width = width;
@@ -20,6 +22,7 @@ public sealed class VisualPackAssetDefinition
         PreviewOverlayResource = previewOverlayResource;
     }
 
+    public bool Optional { get; }
     public string FileName { get; }
     public string DisplayName { get; }
     public int Width { get; }
@@ -88,9 +91,11 @@ public sealed class VisualPackAssetDefinition
         new(
             "Login.jpg",
             Loc.Get("AssetLoginName"),
-            857,
-            238,
+            550,
+            200,
             Loc.Get("AssetLoginDescription"),
-            "Assets/PreviewOverlays/LoginView.png")
+            null),
+        new("HomeProfileCard.jpg", Loc.Get("AssetHomeProfileCardName"), 1100, 300,
+            Loc.Get("AssetHomeProfileCardDescription"), null, optional: true)
     ];
 }

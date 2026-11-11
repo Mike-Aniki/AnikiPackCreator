@@ -19,7 +19,7 @@ public static class VisualPackExportService
         IReadOnlyCollection<VisualPackAssetState> assets,
         Action<int, string>? progress = null)
     {
-        var missing = assets.Where(asset => !asset.IsReady).Select(asset => asset.FileName).ToList();
+        var missing = assets.Where(asset => !asset.IsReady && !asset.Definition.Optional).Select(asset => asset.FileName).ToList();
         if (missing.Count > 0)
         {
             throw new InvalidOperationException(Loc.Format("ServiceMissingSourceImages", string.Join("\n", missing)));
@@ -54,7 +54,7 @@ public static class VisualPackExportService
             using (var archive = new ZipArchive(file, ZipArchiveMode.Create))
             {
                 var index = 0;
-                foreach (var asset in assets)
+                foreach (var asset in assets.Where(asset => asset.IsReady))
                 {
                     index++;
                     progress?.Invoke(index, asset.DisplayName);
@@ -115,6 +115,7 @@ public static class VisualPackExportService
             var entry = archive.Entries.SingleOrDefault(item =>
                 string.Equals(item.FullName, definition.FileName, StringComparison.OrdinalIgnoreCase));
 
+            if (entry is null && definition.Optional) continue;
             if (entry is null)
             {
                 throw new InvalidDataException(Loc.Format("ServiceGeneratedZipMissingFile", definition.FileName));

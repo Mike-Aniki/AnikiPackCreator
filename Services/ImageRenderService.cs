@@ -1,4 +1,5 @@
-﻿using AnikiVisualPackCreator.Models;
+using FlowDirection = System.Windows.FlowDirection; using FontFamily = System.Windows.Media.FontFamily; using Pen = System.Windows.Media.Pen;
+using AnikiVisualPackCreator.Models;
 using System.IO;
 using System.Windows;
 using System.Windows.Media;
@@ -91,6 +92,10 @@ public static class ImageRenderService
             return renderedImage;
         }
 
+        if (fileName.Equals("Login.jpg", StringComparison.OrdinalIgnoreCase) ||
+            fileName.Equals("HomeProfileCard.jpg", StringComparison.OrdinalIgnoreCase))
+            return RenderBannerPreview(renderedImage, outputWidth, outputHeight, fileName);
+
         if (string.Equals(fileName, "MainBackground.jpg", StringComparison.OrdinalIgnoreCase) ||
             string.Equals(fileName, "Login.jpg", StringComparison.OrdinalIgnoreCase))
         {
@@ -136,6 +141,75 @@ public static class ImageRenderService
         preview.Render(visual);
         preview.Freeze();
         return preview;
+    }
+
+    private static BitmapSource RenderBannerPreview(BitmapSource image, int width, int height, string fileName)
+    {
+        var login = fileName.Equals("Login.jpg", StringComparison.OrdinalIgnoreCase);
+        var designWidth = login ? 550.0 : 1100.0;
+        var designHeight = login ? 200.0 : 300.0;
+        var visual = new DrawingVisual();
+        using (var dc = visual.RenderOpen())
+        {
+            dc.PushTransform(new ScaleTransform(width/designWidth, height/designHeight));
+            var bounds = new Rect(0,0,designWidth,designHeight);
+            dc.PushClip(new RectangleGeometry(bounds,login?18:19,login?18:19));
+            dc.DrawImage(image,bounds);
+            var shade = new LinearGradientBrush { StartPoint=new Point(0,0),EndPoint=new Point(1,0) };
+            foreach(var pair in new[]{(0.0,0xD8),(.38,0xB0),(.72,0x50),(1.0,0)})
+                shade.GradientStops.Add(new GradientStop(Color.FromArgb((byte)pair.Item2,0,0,0),pair.Item1));
+            dc.DrawRectangle(shade,null,bounds);
+            dc.DrawRectangle(new SolidColorBrush(Color.FromArgb(login?(byte)77:(byte)61,26,29,34)),null,bounds);
+            void Text(string value,double size,double x,double y,Brush? color=null,bool bold=false)
+            {
+                var text=new FormattedText(value,System.Globalization.CultureInfo.CurrentUICulture,FlowDirection.LeftToRight,
+                    new Typeface(new FontFamily("Segoe UI"),FontStyles.Normal,bold?FontWeights.SemiBold:FontWeights.Normal,FontStretches.Normal),
+                    size,color??Brushes.White,1);
+                dc.DrawText(text,new Point(x,y));
+            }
+            if(login)
+            {
+                var fr=System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName=="fr";
+                // Current theme: avatar on the left, identity in the middle,
+                // sign-in action on the right. Welcome belongs outside the banner.
+                var avatar = new Point(80,100);
+                dc.DrawEllipse(new SolidColorBrush(Color.FromRgb(24,42,62)),
+                    new Pen(new SolidColorBrush(Color.FromRgb(73,149,202)),2),avatar,51,51);
+                dc.PushClip(new EllipseGeometry(avatar,48,48));
+                var silhouette = new SolidColorBrush(Color.FromRgb(166,190,214));
+                dc.DrawEllipse(silhouette,null,new Point(80,86),16,19);
+                dc.DrawEllipse(silhouette,null,new Point(80,135),34,29);
+                dc.Pop();
+                Text(fr?"Joueur":"Player",28,157,67,null,true);
+                Text(fr?"Code d’accès":"Access code",13,157,111,
+                    new SolidColorBrush(Color.FromRgb(239,171,68)));
+                Text("›",32,510,67,new SolidColorBrush(Color.FromRgb(239,171,68)));
+                Text(fr?"Connexion":"Sign in",14,470,116);
+            }
+            else
+            {
+                dc.DrawEllipse(new SolidColorBrush(Color.FromRgb(33,43,56)),new Pen(Brushes.LightGray,2),new Point(95,105),51,51);
+                Text("G",38,80,77,Brushes.White,true);
+                Text("Player",34,175,48,null,true);
+                Text("Fighting fan",20,177,95,Brushes.LightGray);
+                Text("Gamerscore  ·  60",17,177,135,Brushes.LightGray);
+                Text("Total play time  ·  1d 11h",17,177,168,Brushes.LightGray);
+                Text("Top platform · Steam",15,177,219,Brushes.LightGray);
+                var labels=new[]{"Total Games","Installed","Favorite","Monthly play time","Played this month","Completed"};
+                var values=new[]{"225","201","2","15 mn","2","0"};
+                for(int i=0;i<6;i++)
+                {
+                    var x=625+i%3*149;var y=38+i/3*112;
+                    dc.DrawRoundedRectangle(new SolidColorBrush(Color.FromArgb(100,35,39,46)),new Pen(new SolidColorBrush(Color.FromArgb(35,255,255,255)),1),new Rect(x,y,137,100),14,14);
+                    Text(labels[i],12,x+13,y+12,Brushes.LightGray);Text(values[i],27,x+13,y+40,null,true);
+                }
+            }
+            dc.Pop();
+            dc.DrawRoundedRectangle(null,new Pen(new SolidColorBrush(Color.FromArgb(145,220,225,232)),2),bounds,18,18);
+            dc.Pop();
+        }
+        var output=new RenderTargetBitmap(width,height,96,96,PixelFormats.Pbgra32);
+        output.Render(visual);output.Freeze();return output;
     }
 
     private static bool IsMenuPreview(string fileName)
@@ -319,3 +393,4 @@ public static class ImageRenderService
         return (int)Math.Clamp(Math.Round(adjusted), 0.0, 255.0);
     }
 }
+

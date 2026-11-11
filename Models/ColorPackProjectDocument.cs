@@ -1,4 +1,4 @@
-﻿namespace AnikiVisualPackCreator.Models;
+namespace AnikiVisualPackCreator.Models;
 
 public sealed class ColorPackProjectDocument
 {
@@ -10,6 +10,10 @@ public sealed class ColorPackProjectDocument
     public string Description { get; set; } = string.Empty;
     public string TemplateId { get; set; } = ColorPackPalette.ReferenceTemplateId;
 
+    public string Badges { get; set; } = string.Empty;
+    public string ActiveButtons { get; set; } = string.Empty;
+    public string OutgoingMessages { get; set; } = string.Empty;
+    public Dictionary<string, string> ExpertOverrides { get; set; } = new();
     public string PrimaryAccent { get; set; } = ColorPackPalette.DefaultPrimaryAccent;
     public string SecondaryAccent { get; set; } = ColorPackPalette.DefaultSecondaryAccent;
 
@@ -20,6 +24,7 @@ public sealed class ColorPackProjectDocument
     public string Background { get; set; } = ColorPackPalette.DefaultBackground;
     public string Bars { get; set; } = string.Empty;
     public string Menus { get; set; } = string.Empty;
+    public string CinematicOverlay { get; set; } = string.Empty;
     public string MenuHeader { get; set; } = string.Empty;
     public string Cards { get; set; } = string.Empty;
     public string Border { get; set; } = ColorPackPalette.DefaultBorder;
@@ -43,6 +48,7 @@ public sealed class ColorPackPalette
     public const string DefaultBackground = "#1A1D22";
     public const string DefaultBars = "#1B1E24";
     public const string DefaultMenus = "#1B1E24";
+    public const string DefaultCinematicOverlay = "#1A1D22";
     public const string DefaultMenuHeader = "#21242A";
     public const string DefaultCards = "#21242A";
     public const string DefaultBorder = "#21242A";
@@ -52,6 +58,10 @@ public sealed class ColorPackPalette
     public const string DefaultSecondaryText = "#D6DAE0";
     public const string DefaultHighlightText = "#FFF0C8";
 
+    public string Badges { get; init; } = "#21242A";
+    public string ActiveButtons { get; init; } = "#21242A";
+    public string OutgoingMessages { get; init; } = "#21242A";
+    public Dictionary<string, string> ExpertOverrides { get; init; } = new();
     public string PrimaryAccent { get; init; } = DefaultPrimaryAccent;
     public string SecondaryAccent { get; init; } = DefaultSecondaryAccent;
     public string Focus { get; init; } = DefaultFocus;
@@ -61,6 +71,7 @@ public sealed class ColorPackPalette
     public string Background { get; init; } = DefaultBackground;
     public string Bars { get; init; } = DefaultBars;
     public string Menus { get; init; } = DefaultMenus;
+    public string CinematicOverlay { get; init; } = DefaultCinematicOverlay;
     public string MenuHeader { get; init; } = DefaultMenuHeader;
     public string Cards { get; init; } = DefaultCards;
     public string Border { get; init; } = DefaultBorder;

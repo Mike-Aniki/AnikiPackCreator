@@ -1,4 +1,4 @@
-﻿using AnikiVisualPackCreator.Models;
+using AnikiVisualPackCreator.Models;
 using AnikiVisualPackCreator.Services;
 using Loc = AnikiVisualPackCreator.Localization.LocalizationService;
 using Microsoft.Win32;
@@ -675,7 +675,7 @@ public partial class MainWindow : UserControl, INotifyPropertyChanged
             errors.Add(Loc.Get("ValidationInvalidVersion"));
         }
 
-        var missing = Assets.Where(asset => !asset.IsReady).ToList();
+        var missing = Assets.Where(asset => !asset.IsReady && !asset.Definition.Optional).ToList();
         if (missing.Count > 0)
         {
             errors.Add(Loc.Format("ValidationMissingImages", string.Join(", ", missing.Select(asset => asset.FileName))));
